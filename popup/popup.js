@@ -11,11 +11,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Add click handler for main toggle card
   document.getElementById('mainToggle').addEventListener('click', (e) => {
-    if (e.target.tagName !== 'INPUT') {
-      const toggle = document.getElementById('enableToggle');
-      toggle.checked = !toggle.checked;
-      toggle.dispatchEvent(new Event('change'));
+    // Don't toggle if clicking on the slider or its label
+    if (e.target.closest('.toggle-switch')) {
+      return;
     }
+    const toggle = document.getElementById('enableToggle');
+    toggle.checked = !toggle.checked;
+    toggle.dispatchEvent(new Event('change'));
   });
 });
 
@@ -58,10 +60,12 @@ function updateStatusIndicator(enabled) {
   if (enabled) {
     indicator.classList.remove('inactive');
     mainToggle.classList.remove('inactive');
+    mainToggle.classList.add('active');
     statusText.textContent = 'ACTIVE';
   } else {
     indicator.classList.add('inactive');
     mainToggle.classList.add('inactive');
+    mainToggle.classList.remove('active');
     statusText.textContent = 'INACTIVE';
   }
 }

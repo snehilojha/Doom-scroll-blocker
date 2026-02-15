@@ -82,4 +82,4 @@ doom-scroll-blocker/
 
 ## License
 
-Add your preferred license before publishing.
+MIT. See `LICENSE`.

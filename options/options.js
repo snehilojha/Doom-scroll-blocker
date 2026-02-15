@@ -43,7 +43,7 @@ function setupEventListeners() {
     document.getElementById('thresholdValue').textContent = value;
   });
   thresholdSlider.addEventListener('change', async (e) => {
-    await chrome.storage.local.set({ threshold: parseInt(e.target.value) });
+    await chrome.storage.local.set({ threshold: parseInt(e.target.value, 10) });
     showSaveNotice();
   });
   
@@ -60,7 +60,7 @@ function setupEventListeners() {
     document.getElementById('chaosIntensityValue').textContent = value;
   });
   chaosSlider.addEventListener('change', async (e) => {
-    const intensity = parseInt(e.target.value) / 100;
+    const intensity = parseInt(e.target.value, 10) / 100;
     await chrome.storage.local.set({ chaosIntensity: intensity });
     showSaveNotice();
   });
@@ -108,24 +108,35 @@ async function removeKeyword(keyword) {
 
 function renderKeywords() {
   const container = document.getElementById('keywordList');
+  container.replaceChildren();
   
   if (keywords.length === 0) {
-    container.innerHTML = '<p class="empty-keywords">No keywords added yet</p>';
+    const empty = document.createElement('p');
+    empty.className = 'empty-keywords';
+    empty.textContent = 'No keywords added yet';
+    container.appendChild(empty);
     return;
   }
-  
-  container.innerHTML = keywords.map(keyword => `
-    <div class="keyword-tag">
-      <span>${keyword}</span>
-      <span class="keyword-remove" onclick="removeKeywordFromUI('${keyword}')">X</span>
-    </div>
-  `).join('');
-}
 
-// Global function for onclick handler
-window.removeKeywordFromUI = function(keyword) {
-  removeKeyword(keyword);
-};
+  keywords.forEach((keyword) => {
+    const tag = document.createElement('div');
+    tag.className = 'keyword-tag';
+
+    const label = document.createElement('span');
+    label.textContent = keyword;
+
+    const removeButton = document.createElement('button');
+    removeButton.type = 'button';
+    removeButton.className = 'keyword-remove';
+    removeButton.setAttribute('aria-label', `Remove keyword: ${keyword}`);
+    removeButton.textContent = 'X';
+    removeButton.addEventListener('click', () => removeKeyword(keyword));
+
+    tag.appendChild(label);
+    tag.appendChild(removeButton);
+    container.appendChild(tag);
+  });
+}
 
 async function resetStats() {
   if (!confirm('Reset all statistics? Your settings will be preserved.')) {

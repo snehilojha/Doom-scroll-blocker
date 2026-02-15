@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
@@ -15,6 +15,10 @@
       --glow: #4cff8f;
       --glow-soft: rgba(76, 255, 143, 0.32);
       --danger: #ff5b5b;
+    }
+
+    html {
+      overflow: hidden;
     }
 
     * {
@@ -65,6 +69,20 @@
         radial-gradient(180px 140px at 16% 92%, rgba(46, 163, 95, 0.28), transparent 78%),
         linear-gradient(140deg, var(--bg-0), var(--bg-1) 48%, var(--bg-2));
       overflow: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Hide all scrollbars */
+    *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+
+    * {
+      -ms-overflow-style: none !important;
+      scrollbar-width: none !important;
     }
 
     body::before {
@@ -214,9 +232,21 @@
       box-shadow: 0 14px 26px rgba(6, 19, 13, 0.55);
     }
 
+    .main-toggle.active:hover {
+      box-shadow: 0 0 25px rgba(76, 255, 143, 0.2),
+                  0 0 50px rgba(76, 255, 143, 0.1),
+                  0 12px 28px rgba(6, 19, 13, 0.55);
+    }
+
     .main-toggle.inactive {
       border-color: rgba(179, 87, 87, 0.44);
       background: linear-gradient(150deg, rgba(42, 21, 21, 0.7), rgba(15, 8, 8, 0.9));
+    }
+
+    .main-toggle.active {
+      box-shadow: 0 0 20px rgba(76, 255, 143, 0.15),
+                  0 0 40px rgba(76, 255, 143, 0.08),
+                  0 8px 26px rgba(6, 19, 13, 0.55);
     }
 
     .main-toggle::before {
@@ -386,11 +416,11 @@
     #optionsBtn {
       color: #0a1a11;
       background: linear-gradient(120deg, #69ffac, #34e384);
-      box-shadow: 0 8px 24px rgba(76, 255, 143, 0.25);
+      box-shadow: 0 8px 24px rgba(76, 255, 143, 0.15);
     }
 
     #optionsBtn:hover {
-      box-shadow: 0 12px 28px rgba(76, 255, 143, 0.36);
+      box-shadow: 0 12px 28px rgba(76, 255, 143, 0.22);
     }
 
     #resetBtn {
@@ -452,11 +482,11 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-value" id="sessionInterrupts">0</div>
-        <div class="stat-label">Today</div>
+        <div class="stat-label">Saved Today</div>
       </div>
       <div class="stat-card">
         <div class="stat-value" id="totalInterrupts">0</div>
-        <div class="stat-label">All Time</div>
+        <div class="stat-label">Saved Total</div>
       </div>
     </div>
 
@@ -475,7 +505,7 @@
     </div>
 
     <div class="footer">
-      <div class="footer-text">Focus preservation protocol</div>
+      <div class="footer-text">Attention is Finite</div>
     </div>
   </div>
 

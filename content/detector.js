@@ -21,8 +21,11 @@ class DoomScrollDetector {
     };
     
     this.siteConfig = this.getSiteConfig();
-    this.lastWheelTime = 0;
-    this.lastTouchMoveTime = 0;
+    this.keywordIntervalId = null;
+    this.chaosIntervalId = null;
+    this.lastCountedScrollAt = 0;
+    this.scrollDedupeMs = 90;
+    this.isTriggering = false;
     this.init();
   }
   
@@ -85,33 +88,40 @@ class DoomScrollDetector {
       if (area !== 'local') {
         return;
       }
+      let refreshDynamicFeatures = false;
+
       if (changes.enabled) {
         this.config.enabled = changes.enabled.newValue !== false;
         if (!this.config.enabled) {
           this.resetState();
         }
+        refreshDynamicFeatures = true;
       }
       if (changes.threshold) {
         this.config.threshold = changes.threshold.newValue;
       }
       if (changes.chaosMode) {
         this.config.chaosMode = !!changes.chaosMode.newValue;
+        refreshDynamicFeatures = true;
       }
       if (changes.chaosIntensity) {
         this.config.chaosIntensity = changes.chaosIntensity.newValue;
       }
       if (changes.keywordTriggers) {
         this.config.keywordTriggers = changes.keywordTriggers.newValue || [];
+        refreshDynamicFeatures = true;
+      }
+      if (refreshDynamicFeatures) {
+        this.updateDynamicFeatures();
       }
     });
     
     if (!this.config.enabled) {
       console.log('[Doom Scroll Blocker] Disabled for this site');
-      return;
+    } else {
+      console.log('[Doom Scroll Blocker] Initialized on', this.siteConfig.name);
     }
-    
-    console.log('[Doom Scroll Blocker] Initialized on', this.siteConfig.name);
-    
+
     // Attach event listeners. Some sites (especially Instagram) scroll nested
     // containers/reels, so track wheel and touchmove in addition to scroll.
     window.addEventListener('scroll', this.onScroll.bind(this), { passive: true });
@@ -119,66 +129,38 @@ class DoomScrollDetector {
     document.addEventListener('wheel', this.onWheel.bind(this), { passive: true, capture: true });
     document.addEventListener('touchmove', this.onTouchMove.bind(this), { passive: true, capture: true });
     document.addEventListener('click', this.onClick.bind(this), true);
-    
-    // Check for keyword triggers periodically if enabled
-    if (this.config.keywordTriggers.length > 0) {
-      setInterval(() => this.checkKeywords(), 3000);
-    }
-    
-    // Chaos mode random triggers
-    if (this.config.chaosMode) {
-      this.startChaosMode();
-    }
+
+    this.updateDynamicFeatures();
   }
   
   onScroll() {
-    const now = Date.now();
-    const delta = now - this.state.lastScrollTime;
-    
-    // Track high-frequency scrolling (faster than 300ms between scrolls)
-    if (delta < 300) {
-      this.state.rapidScrolls++;
+    if (!this.config.enabled) {
+      return;
     }
-    
-    this.state.scrollCount++;
-    this.state.lastScrollTime = now;
-    this.state.lastInteractionTime = now;
-    
-    // Check if we should trigger
-    this.checkTriggerConditions();
+    this.recordScrollActivity(300);
   }
 
   onWheel(event) {
+    if (!this.config.enabled) {
+      return;
+    }
     if (Math.abs(event.deltaY) < 8) {
       return;
     }
-
-    const now = Date.now();
-    const delta = now - this.lastWheelTime;
-
-    this.state.scrollCount++;
-    if (delta > 0 && delta < 350) {
-      this.state.rapidScrolls++;
-    }
-    this.lastWheelTime = now;
-    this.state.lastInteractionTime = now;
-    this.checkTriggerConditions();
+    this.recordScrollActivity(350);
   }
 
   onTouchMove() {
-    const now = Date.now();
-    const delta = now - this.lastTouchMoveTime;
-
-    this.state.scrollCount++;
-    if (delta > 0 && delta < 450) {
-      this.state.rapidScrolls++;
+    if (!this.config.enabled) {
+      return;
     }
-    this.lastTouchMoveTime = now;
-    this.state.lastInteractionTime = now;
-    this.checkTriggerConditions();
+    this.recordScrollActivity(450);
   }
   
   onClick(event) {
+    if (!this.config.enabled) {
+      return;
+    }
     // Track meaningful clicks (links, buttons)
     if (event.target.tagName === 'A' || 
         event.target.closest('a') ||
@@ -186,6 +168,24 @@ class DoomScrollDetector {
       this.state.linkClicks++;
       this.state.lastInteractionTime = Date.now();
     }
+  }
+
+  recordScrollActivity(rapidWindowMs) {
+    const now = Date.now();
+    if ((now - this.lastCountedScrollAt) < this.scrollDedupeMs) {
+      return;
+    }
+
+    const delta = now - this.state.lastScrollTime;
+    if (delta > 0 && delta < rapidWindowMs) {
+      this.state.rapidScrolls++;
+    }
+
+    this.state.scrollCount++;
+    this.state.lastScrollTime = now;
+    this.state.lastInteractionTime = now;
+    this.lastCountedScrollAt = now;
+    this.checkTriggerConditions();
   }
   
   checkTriggerConditions() {
@@ -232,7 +232,10 @@ class DoomScrollDetector {
     if (!this.config.enabled) return;
     if (this.config.keywordTriggers.length === 0) return;
     
-    const bodyText = document.body.innerText.toLowerCase();
+    const bodyText = (document.body?.innerText || '').toLowerCase();
+    if (!bodyText) {
+      return;
+    }
     
     for (const keyword of this.config.keywordTriggers) {
       if (bodyText.includes(keyword.toLowerCase())) {
@@ -242,12 +245,30 @@ class DoomScrollDetector {
       }
     }
   }
+
+  startKeywordWatcher() {
+    if (this.keywordIntervalId !== null) {
+      return;
+    }
+    this.keywordIntervalId = setInterval(() => this.checkKeywords(), 3000);
+  }
+
+  stopKeywordWatcher() {
+    if (this.keywordIntervalId === null) {
+      return;
+    }
+    clearInterval(this.keywordIntervalId);
+    this.keywordIntervalId = null;
+  }
   
   startChaosMode() {
+    if (this.chaosIntervalId !== null) {
+      return;
+    }
     // Random triggers based on intensity
     const checkInterval = 10000; // Check every 10 seconds
     
-    setInterval(() => {
+    this.chaosIntervalId = setInterval(() => {
       if (!this.config.enabled || !this.config.chaosMode) {
         return;
       }
@@ -259,31 +280,62 @@ class DoomScrollDetector {
       }
     }, checkInterval);
   }
-  
-  async triggerInterrupt() {
-    const { enabled } = await chrome.storage.local.get('enabled');
-    if (enabled === false) {
+
+  stopChaosMode() {
+    if (this.chaosIntervalId === null) {
+      return;
+    }
+    clearInterval(this.chaosIntervalId);
+    this.chaosIntervalId = null;
+  }
+
+  updateDynamicFeatures() {
+    if (!this.config.enabled) {
+      this.stopKeywordWatcher();
+      this.stopChaosMode();
       return;
     }
 
-    // Send message to service worker to handle redirect
-    chrome.runtime.sendMessage({
-      type: 'DOOM_SCROLL_DETECTED',
-      site: this.siteConfig.name,
-      duration: (Date.now() - this.state.startTime) / 1000,
-      scrollCount: this.state.scrollCount,
-      rapidScrolls: this.state.rapidScrolls
-    });
-    
-    // Reset state
-    this.state = {
-      scrollCount: 0,
-      startTime: Date.now(),
-      lastScrollTime: Date.now(),
-      rapidScrolls: 0,
-      linkClicks: 0,
-      lastInteractionTime: Date.now()
-    };
+    if (this.config.keywordTriggers.length > 0) {
+      this.startKeywordWatcher();
+    } else {
+      this.stopKeywordWatcher();
+    }
+
+    if (this.config.chaosMode) {
+      this.startChaosMode();
+    } else {
+      this.stopChaosMode();
+    }
+  }
+  
+  async triggerInterrupt() {
+    if (this.isTriggering) {
+      return;
+    }
+    this.isTriggering = true;
+
+    try {
+      const { enabled } = await chrome.storage.local.get('enabled');
+      if (enabled === false) {
+        return;
+      }
+
+      // Send message to service worker to handle redirect
+      chrome.runtime.sendMessage({
+        type: 'DOOM_SCROLL_DETECTED',
+        site: this.siteConfig.name,
+        duration: (Date.now() - this.state.startTime) / 1000,
+        scrollCount: this.state.scrollCount,
+        rapidScrolls: this.state.rapidScrolls
+      });
+      
+      this.resetState();
+    } catch (error) {
+      console.error('[Doom Scroll Blocker] Failed to trigger interrupt:', error);
+    } finally {
+      this.isTriggering = false;
+    }
   }
 
   resetState() {
