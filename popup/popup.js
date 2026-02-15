@@ -81,12 +81,10 @@ async function handleToggle(event) {
 }
 
 async function handleReset() {
-  if (confirm('Reset all stats? This cannot be undone.')) {
+  if (confirm('Reset today\'s stats? This will only reset today\'s saved count.')) {
     await chrome.storage.local.set({
       sessionInterrupts: 0,
-      interruptCount: 0,
-      escalationLevel: 1,
-      history: []
+      escalationLevel: 1
     });
     
     await loadState();

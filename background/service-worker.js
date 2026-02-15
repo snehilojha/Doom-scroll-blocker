@@ -95,7 +95,7 @@ function calculateTier(state) {
     return selectChaosTier(state.chaosIntensity || 0.5);
   }
   
-  // Normal escalation logic
+  // Normal escalation logic - more gradual progression
   const sessionInterrupts = state.sessionInterrupts || 0;
   const lastInterruptTime = state.lastInterruptTime || 0;
   const currentLevel = state.escalationLevel || 1;
@@ -103,27 +103,34 @@ function calculateTier(state) {
   const hoursSinceLastInterrupt = 
     (Date.now() - lastInterruptTime) / (1000 * 60 * 60);
   
-  // ESCALATION RULES:
+  // ESCALATION RULES - More gradual:
   
   // Fresh start (12+ hours since last) - reset to Tier 1
   if (hoursSinceLastInterrupt > 12) {
     return 1;
   }
   
-  // Multiple interrupts same day - escalate
-  if (sessionInterrupts >= 4) {
+  // Gradual escalation with indeterminate progress
+  // Tier 1 -> 2: after 3 interrupts
+  // Tier 2 -> 3: after 5 interrupts  
+  // Tier 3 -> 4: after 7 interrupts
+  
+  if (sessionInterrupts >= 7) {
     return 4; // Max tier
   }
-  if (sessionInterrupts >= 3) {
-    return 3;
+  if (sessionInterrupts >= 5) {
+    // Indeterminate: 70% chance to stay in tier 3, 30% to go to tier 4
+    return Math.random() < 0.7 ? 3 : 4;
   }
-  if (sessionInterrupts >= 2) {
-    return 2;
+  if (sessionInterrupts >= 3) {
+    // Indeterminate: 60% chance to stay in tier 2, 40% to go to tier 3
+    return Math.random() < 0.6 ? 2 : 3;
   }
   
-  // Quick re-interrupt (< 2 hours) - escalate one level
-  if (hoursSinceLastInterrupt < 2) {
-    return Math.min(currentLevel + 1, 4);
+  // Quick re-interrupt (< 2 hours) - small chance to escalate
+  if (hoursSinceLastInterrupt < 2 && sessionInterrupts >= 2) {
+    // 30% chance to escalate one level
+    return Math.random() < 0.3 ? Math.min(currentLevel + 1, 4) : currentLevel;
   }
   
   // Default: maintain current level or start at 1
@@ -168,19 +175,29 @@ async function loadRedirectPool(tier) {
 }
 
 function selectWeightedRandom(pool) {
-  // Weight by quality score (1-10)
-  const totalWeight = pool.reduce((sum, item) => sum + (item.quality || 5), 0);
-  let random = Math.random() * totalWeight;
+  // More random selection with slight quality influence
+  if (pool.length === 0) return null;
+  if (pool.length === 1) return pool[0];
   
-  for (const item of pool) {
-    random -= (item.quality || 5);
-    if (random <= 0) {
-      return item;
+  // 70% pure random, 30% quality-weighted for better variety
+  if (Math.random() < 0.7) {
+    // Pure random selection
+    return pool[Math.floor(Math.random() * pool.length)];
+  } else {
+    // Quality-weighted selection (existing logic)
+    const totalWeight = pool.reduce((sum, item) => sum + (item.quality || 5), 0);
+    let random = Math.random() * totalWeight;
+    
+    for (const item of pool) {
+      random -= (item.quality || 5);
+      if (random <= 0) {
+        return item;
+      }
     }
+    
+    // Fallback to first item
+    return pool[0];
   }
-  
-  // Fallback to first item
-  return pool[0];
 }
 
 function getTierMessage(tier) {
@@ -205,6 +222,31 @@ async function resetSessionCounterDaily() {
   }
 }
 
+async function performMidnightReset() {
+  const now = new Date();
+  const currentHour = now.getHours();
+  
+  // Reset at 1 AM
+  if (currentHour === 1) {
+    const state = await chrome.storage.local.get(['lastMidnightReset']);
+    const today = new Date().toDateString();
+    
+    // Only reset once per day
+    if (state.lastMidnightReset !== today) {
+      // Reset everything except settings
+      await chrome.storage.local.set({
+        sessionInterrupts: 0,
+        interruptCount: 0,
+        escalationLevel: 1,
+        history: [],
+        lastMidnightReset: today
+      });
+      
+      console.log('[Service Worker] Midnight reset completed at 1 AM');
+    }
+  }
+}
+
 // Initialize: Reset session counter on install
 chrome.runtime.onInstalled.addListener(() => {
   console.log('[Service Worker] Extension installed/updated');
@@ -219,5 +261,6 @@ chrome.alarms.create('daily-reset', { periodInMinutes: 60 });
 chrome.alarms.onAlarm.addListener((alarm) => {
   if (alarm.name === 'daily-reset') {
     resetSessionCounterDaily();
+    performMidnightReset();
   }
 });
