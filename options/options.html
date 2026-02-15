@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Doom Scroll Blocker - Settings</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-size: 32px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    
+    .header p {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .section {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+    
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .section-description {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    
+    .setting-row {
+      margin-bottom: 20px;
+    }
+    
+    .setting-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    
+    input[type="range"] {
+      width: 100%;
+      height: 6px;
+      background: #e5e7eb;
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: #667eea;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: #667eea;
+      cursor: pointer;
+      border-radius: 50%;
+      border: none;
+    }
+    
+    .range-value {
+      display: inline-block;
+      background: #f3f4f6;
+      padding: 4px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #667eea;
+      margin-top: 8px;
+    }
+    
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f9fafb;
+      padding: 12px 16px;
+      border-radius: 8px;
+    }
+    
+    .toggle-info {
+      flex: 1;
+    }
+    
+    .toggle-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+    
+    .toggle-desc {
+      font-size: 12px;
+      color: #6b7280;
+    }
+    
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #d1d5db;
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .slider {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+    
+    .keyword-input {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    
+    input[type="text"]:focus {
+      border-color: #667eea;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+    }
+    
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+    
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background: #dc2626;
+    }
+    
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    
+    .keyword-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #f3f4f6;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #374151;
+    }
+    
+    .keyword-remove {
+      cursor: pointer;
+      color: #ef4444;
+      font-weight: bold;
+      font-size: 16px;
+      line-height: 1;
+    }
+    
+    .keyword-remove:hover {
+      color: #dc2626;
+    }
+    
+    .save-notice {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #10b981;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    
+    .save-notice.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .info-box {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+    
+    .info-box p {
+      font-size: 13px;
+      color: #1e40af;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>⚙️ Settings</h1>
+      <p>Customize your doom-scroll protection</p>
+    </div>
+    
+    <!-- Detection Settings -->
+    <div class="section">
+      <div class="section-title">🎯 Detection Settings</div>
+      <div class="section-description">
+        Control when and how the extension interrupts your scrolling
+      </div>
+      
+      <div class="setting-row">
+        <label class="setting-label">Trigger Threshold</label>
+        <input type="range" id="thresholdSlider" min="20" max="120" step="5" value="45">
+        <div class="range-value">
+          <span id="thresholdValue">45</span> seconds
+        </div>
+        <div class="info-box">
+          <p>How long you can scroll before getting interrupted. Lower = more aggressive protection.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Chaos Mode -->
+    <div class="section">
+      <div class="section-title">🎲 Chaos Mode</div>
+      <div class="section-description">
+        Enable random interrupts and unpredictable tier selection
+      </div>
+      
+      <div class="toggle-container">
+        <div class="toggle-info">
+          <div class="toggle-title">Enable Chaos Mode</div>
+          <div class="toggle-desc">Randomly redirects you, ignoring normal escalation</div>
+        </div>
+        <label class="toggle-switch">
+          <input type="checkbox" id="chaosModeToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      
+      <div class="setting-row" style="margin-top: 16px;">
+        <label class="setting-label">Chaos Intensity</label>
+        <input type="range" id="chaosIntensitySlider" min="0" max="100" step="10" value="50">
+        <div class="range-value">
+          <span id="chaosIntensityValue">50</span>%
+        </div>
+        <div class="info-box">
+          <p>Higher intensity = more frequent random interrupts. Use with caution!</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Keyword Triggers -->
+    <div class="section">
+      <div class="section-title">🔑 Keyword Triggers</div>
+      <div class="section-description">
+        Auto-redirect when specific words appear on the page (e.g., "breaking news", "trump")
+      </div>
+      
+      <div class="keyword-input">
+        <input type="text" id="keywordInput" placeholder="Enter a keyword (e.g., 'elon')">
+        <button class="btn btn-primary" id="addKeywordBtn">Add</button>
+      </div>
+      
+      <div class="keyword-list" id="keywordList">
+        <!-- Keywords will be added here dynamically -->
+      </div>
+      
+      <div class="info-box">
+        <p>Keywords are case-insensitive. The page is scanned every 3 seconds.</p>
+      </div>
+    </div>
+    
+    <!-- Danger Zone -->
+    <div class="section">
+      <div class="section-title">⚠️ Danger Zone</div>
+      
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-secondary" id="resetStatsBtn">Reset Statistics</button>
+        <button class="btn btn-danger" id="resetAllBtn">Reset All Settings</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="save-notice" id="saveNotice">
+    ✓ Settings saved
+  </div>
+  
+  <script src="options.js"></script>
+</body>
+</html>

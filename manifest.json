@@ -1,0 +1,71 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Doom Scroll Blocker: Chaotic Good Edition",
+  "version": "1.0.0",
+  "description": "Interrupts doom-scrolling by redirecting you to progressively weirder corners of the internet",
+  "permissions": [
+    "storage",
+    "tabs",
+    "notifications",
+    "alarms"
+  ],
+  "host_permissions": [
+    "*://twitter.com/*",
+    "*://x.com/*",
+    "*://instagram.com/*",
+    "*://*.instagram.com/*",
+    "*://www.instagram.com/*",
+    "*://tiktok.com/*",
+    "*://www.tiktok.com/*"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://twitter.com/*",
+        "*://x.com/*"
+      ],
+      "js": ["content/detector.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://instagram.com/*",
+        "*://*.instagram.com/*",
+        "*://www.instagram.com/*"
+      ],
+      "js": ["content/detector.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "*://tiktok.com/*",
+        "*://www.tiktok.com/*"
+      ],
+      "js": ["content/detector.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "48": "assets/icons/icon48.png",
+      "128": "assets/icons/icon128.png"
+    }
+  },
+  "options_page": "options/options.html",
+  "web_accessible_resources": [
+    {
+      "resources": ["data/*.json"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "tier": 3,
+  "name": "WEIRD Weird",
+  "description": "Deep internet rabbit holes and truly bizarre content",
+  "redirects": [
+    {
+      "url": "https://scp-wiki.wikidot.com/random:random-scp",
+      "title": "Random SCP Foundation Entry",
+      "quality": 9
+    },
+    {
+      "url": "https://github.com/explore",
+      "title": "Explore GitHub - Random projects",
+      "quality": 7
+    },
+    {
+      "url": "https://www.marginalia.nu/",
+      "title": "Marginalia Search - Non-commercial web",
+      "quality": 8
+    },
+    {
+      "url": "https://wiby.me/surprise/",
+      "title": "Wiby - Search engine for old web",
+      "quality": 9
+    },
+    {
+      "url": "https://www.atlasobscura.com/random",
+      "title": "Atlas Obscura - Random wonder",
+      "quality": 8
+    }
+  ]
+}

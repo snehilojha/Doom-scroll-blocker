@@ -1,0 +1,32 @@
+{
+  "tier": 2,
+  "name": "Weird",
+  "description": "Interesting oddities and random corners of the internet",
+  "redirects": [
+    {
+      "url": "https://en.wikipedia.org/wiki/Special:Random",
+      "title": "Random Wikipedia Article",
+      "quality": 9
+    },
+    {
+      "url": "https://theuselessweb.com/",
+      "title": "The Useless Web - Random weird sites",
+      "quality": 8
+    },
+    {
+      "url": "https://archive.org/web/",
+      "title": "Internet Archive - Wayback Machine",
+      "quality": 7
+    },
+    {
+      "url": "https://Neal.fun",
+      "title": "Neal.fun - Interactive internet toys",
+      "quality": 9
+    },
+    {
+      "url": "https://randomstreetview.com/",
+      "title": "Random Street View - Somewhere on Earth",
+      "quality": 8
+    }
+  ]
+}

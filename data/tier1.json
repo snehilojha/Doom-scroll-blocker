@@ -1,0 +1,32 @@
+{
+  "tier": 1,
+  "name": "Wholesome",
+  "description": "Calming, positive, uplifting content",
+  "redirects": [
+    {
+      "url": "https://www.boredpanda.com/cutest-puppy-dog-pictures/?utm_source=chatgpt.com/",
+      "title": "378 Of The Cutest Puppies Ever",
+      "quality": 9
+    },
+    {
+      "url": "https://www.thesprucepets.com/pictures-of-puppies-4176178?utm_source=chatgpt.com",
+      "title": "25 of the Cutest Puppies We’ve Ever Seen",
+      "quality": 8
+    },
+    {
+      "url": "https://blog.prepscholar.com/cute-puppies-pictures-videos?utm_source=chatgpt.com",
+      "title": "The 72 Cutest Puppies to Brighten Your Day",
+      "quality": 9
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/Shiba_Inu_Puppy_Cam?utm_source=chatgpt.com",
+      "title": "Shiba Inu Puppy Cam (Wikipedia)",
+      "quality": 7
+    },
+    {
+      "url": "https://en.wikipedia.org/wiki/WeRateDogs?utm_source=chatgpt.com",
+      "title": "WeRateDogs (Dog Rating Account)",
+      "quality": 8
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "tier": 4,
+  "name": "Global Oddities",
+  "description": "Live streams and real-time feeds from around the world",
+  "redirects": [
+    {
+      "url": "https://www.nasa.gov/live",
+      "title": "NASA Live - International Space Station",
+      "quality": 10
+    },
+    {
+      "url": "https://www.earthcam.com/",
+      "title": "EarthCam - Live webcams worldwide",
+      "quality": 8
+    },
+    {
+      "url": "https://www.airport-webcams.net/",
+      "title": "Airport Webcams - Watch planes land",
+      "quality": 7
+    },
+    {
+      "url": "https://www.skylinewebcams.com/en.html",
+      "title": "Skyline Webcams - Cities and landmarks",
+      "quality": 8
+    },
+    {
+      "url": "https://zoom.earth/",
+      "title": "Zoom Earth - Real-time satellite view",
+      "quality": 9
+    },
+    {
+      "url": "https://www.meteoblue.com/en/weather/webcams",
+      "title": "MeteoBlue - Weather webcams worldwide",
+      "quality": 7
+    }
+  ]
+}
