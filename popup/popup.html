@@ -4,209 +4,481 @@
   <meta charset="UTF-8">
   <title>Doom Scroll Blocker</title>
   <style>
+    :root {
+      --bg-0: #030505;
+      --bg-1: #08110d;
+      --bg-2: #0d1f16;
+      --text: #e9efe9;
+      --muted: #99aba0;
+      --line: rgba(126, 160, 140, 0.24);
+      --card: rgba(6, 14, 10, 0.8);
+      --glow: #4cff8f;
+      --glow-soft: rgba(76, 255, 143, 0.32);
+      --danger: #ff5b5b;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(76, 255, 143, 0.35);
+      }
+      50% {
+        box-shadow: 0 0 0 8px rgba(76, 255, 143, 0);
+      }
+    }
+
+    @keyframes drift {
+      0% {
+        transform: translate3d(-4px, 0, 0);
+      }
+      50% {
+        transform: translate3d(7px, -5px, 0);
+      }
+      100% {
+        transform: translate3d(-4px, 0, 0);
+      }
+    }
+
     body {
-      width: 320px;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      width: 396px;
+      min-height: 540px;
+      font-family: "Space Grotesk", "Sora", "Manrope", "Segoe UI Variable Text", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(110px 220px at 82% 8%, rgba(75, 255, 141, 0.24), transparent 74%),
+        radial-gradient(180px 140px at 16% 92%, rgba(46, 163, 95, 0.28), transparent 78%),
+        linear-gradient(140deg, var(--bg-0), var(--bg-1) 48%, var(--bg-2));
+      overflow: hidden;
     }
-    
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(120, 160, 140, 0.04) 0 1px,
+        transparent 1px 4px
+      );
+      pointer-events: none;
+      opacity: 0.55;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      animation: fadeUp 320ms ease-out;
+    }
+
+    .container::after {
+      content: "";
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border-radius: 26px;
+      right: -42px;
+      top: 78px;
+      background: linear-gradient(140deg, rgba(56, 209, 113, 0.62), rgba(7, 22, 14, 0.16));
+      filter: blur(0.2px);
+      opacity: 0.26;
+      transform: rotate(-16deg);
+      animation: drift 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
     .header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    
-    .header h1 {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-    
-    .header p {
-      font-size: 12px;
-      opacity: 0.9;
-    }
-    
-    .toggle-section {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 16px;
+      display: grid;
+      gap: 14px;
       margin-bottom: 16px;
+      animation: fadeUp 400ms ease-out;
     }
-    
-    .toggle-container {
+
+    .brand-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    
-    .toggle-label {
-      font-size: 14px;
-      font-weight: 500;
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1;
     }
-    
+
+    .tagline {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 300px;
+      letter-spacing: 0.01em;
+    }
+
+    .status-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(10, 21, 15, 0.66);
+      backdrop-filter: blur(6px);
+    }
+
+    .status-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--glow);
+      animation: pulseGlow 2s ease infinite;
+    }
+
+    .status-indicator.inactive {
+      background: var(--danger);
+      animation: none;
+    }
+
+    .status-text {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      color: #dce8de;
+    }
+
+    .hero {
+      margin-bottom: 16px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background:
+        linear-gradient(100deg, rgba(19, 39, 29, 0.75), rgba(7, 16, 11, 0.7)),
+        var(--card);
+      backdrop-filter: blur(5px);
+      animation: fadeUp 480ms ease-out;
+    }
+
+    .hero-title {
+      font-size: 34px;
+      line-height: 0.95;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .hero-title .strong {
+      color: #c5ffd9;
+    }
+
+    .hero-subtitle {
+      color: #9bb6a5;
+      font-size: 12px;
+      line-height: 1.55;
+      max-width: 300px;
+    }
+
+    .main-toggle {
+      background:
+        linear-gradient(150deg, rgba(28, 61, 45, 0.65), rgba(5, 12, 9, 0.88));
+      border: 1px solid rgba(105, 158, 125, 0.35);
+      border-radius: 16px;
+      padding: 16px 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+      animation: fadeUp 540ms ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-toggle:hover {
+      transform: translateY(-2px);
+      border-color: rgba(119, 255, 169, 0.56);
+      box-shadow: 0 14px 26px rgba(6, 19, 13, 0.55);
+    }
+
+    .main-toggle.inactive {
+      border-color: rgba(179, 87, 87, 0.44);
+      background: linear-gradient(150deg, rgba(42, 21, 21, 0.7), rgba(15, 8, 8, 0.9));
+    }
+
+    .main-toggle::before {
+      content: "";
+      position: absolute;
+      inset: -80% -10%;
+      background: linear-gradient(90deg, transparent, rgba(126, 255, 174, 0.12), transparent);
+      transform: translateX(-100%);
+      transition: transform 450ms ease;
+    }
+
+    .main-toggle:hover::before {
+      transform: translateX(100%);
+    }
+
+    .toggle-content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .toggle-label {
+      color: #eaf8ed;
+      font-size: 15px;
+      font-weight: 640;
+      letter-spacing: 0.01em;
+    }
+
     .toggle-switch {
       position: relative;
-      width: 50px;
-      height: 26px;
+      width: 58px;
+      height: 32px;
+      flex-shrink: 0;
     }
-    
+
     .toggle-switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-    
+
     .slider {
       position: absolute;
+      inset: 0;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(255, 255, 255, 0.3);
-      transition: 0.3s;
-      border-radius: 26px;
+      border-radius: 99px;
+      border: 1px solid rgba(167, 203, 181, 0.36);
+      background: rgba(14, 24, 18, 0.92);
+      transition: 220ms ease;
     }
-    
+
     .slider:before {
-      position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: 0.3s;
+      position: absolute;
+      height: 22px;
+      width: 22px;
+      left: 4px;
+      bottom: 4px;
       border-radius: 50%;
+      background: #f0faf3;
+      transition: 220ms ease;
     }
-    
+
     input:checked + .slider {
-      background-color: #4ade80;
+      background: linear-gradient(120deg, rgba(61, 241, 129, 0.76), rgba(45, 169, 96, 0.88));
+      border-color: rgba(183, 255, 211, 0.58);
     }
-    
+
     input:checked + .slider:before {
-      transform: translateX(24px);
+      transform: translateX(26px);
+      background: #072011;
     }
-    
-    .stats {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 16px;
-    }
-    
-    .stats h2 {
-      font-size: 14px;
-      font-weight: 600;
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
       margin-bottom: 12px;
-      opacity: 0.9;
+      animation: fadeUp 620ms ease-out;
     }
-    
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 13px;
+
+    .stat-card {
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 14px;
+      background: rgba(5, 13, 9, 0.8);
+      transition: transform 190ms ease, border-color 190ms ease;
     }
-    
-    .stat-label {
-      opacity: 0.8;
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(123, 235, 162, 0.5);
     }
-    
+
     .stat-value {
-      font-weight: 600;
+      font-size: 28px;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      color: #f4fff7;
+      margin-bottom: 6px;
     }
-    
-    .current-tier {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 8px 12px;
-      border-radius: 8px;
-      text-align: center;
-      margin-top: 12px;
-      font-size: 13px;
-      font-weight: 500;
-    }
-    
-    .buttons {
-      display: flex;
-      gap: 8px;
-    }
-    
-    button {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    
-    button:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-    
-    .footer {
-      text-align: center;
+
+    .stat-label {
       font-size: 11px;
-      margin-top: 16px;
-      opacity: 0.7;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #84a38f;
+      font-weight: 650;
+    }
+
+    .tier-display {
+      margin-bottom: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(105, 181, 131, 0.4);
+      padding: 12px 14px;
+      background: linear-gradient(120deg, rgba(13, 30, 21, 0.92), rgba(25, 58, 41, 0.8));
+      animation: fadeUp 700ms ease-out;
+    }
+
+    .tier-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9eb8a8;
+      margin-bottom: 5px;
+      font-weight: 700;
+    }
+
+    .tier-name {
+      font-size: 19px;
+      font-weight: 680;
+      color: #e9ffe9;
+      letter-spacing: -0.01em;
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      animation: fadeUp 780ms ease-out;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      font-weight: 720;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn span {
+      pointer-events: none;
+    }
+
+    #optionsBtn {
+      color: #0a1a11;
+      background: linear-gradient(120deg, #69ffac, #34e384);
+      box-shadow: 0 8px 24px rgba(76, 255, 143, 0.25);
+    }
+
+    #optionsBtn:hover {
+      box-shadow: 0 12px 28px rgba(76, 255, 143, 0.36);
+    }
+
+    #resetBtn {
+      color: #d0dfd5;
+      background: rgba(9, 19, 13, 0.82);
+      border-color: rgba(111, 148, 125, 0.32);
+    }
+
+    #resetBtn:hover {
+      border-color: rgba(155, 195, 171, 0.56);
+      background: rgba(17, 32, 23, 0.92);
+    }
+
+    .footer {
+      margin-top: 14px;
+      text-align: center;
+      animation: fadeUp 860ms ease-out;
+    }
+
+    .footer-text {
+      color: #79907f;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 620;
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>🌀 Doom Scroll Blocker</h1>
-    <p>Chaotic Good Edition</p>
-  </div>
-  
-  <div class="toggle-section">
-    <div class="toggle-container">
-      <span class="toggle-label">Protection Active</span>
-      <label class="toggle-switch">
-        <input type="checkbox" id="enableToggle">
-        <span class="slider"></span>
-      </label>
+  <div class="container">
+    <div class="header">
+      <div class="brand-row">
+        <div class="logo-text">DOOM / BLOCKER</div>
+        <div class="status-bar">
+          <div class="status-indicator" id="statusIndicator"></div>
+          <div class="status-text" id="statusText">ACTIVE</div>
+        </div>
+      </div>
+      <div class="tagline">A neon guardrail for mindless scroll loops and feed spirals.</div>
+    </div>
+
+    <div class="hero">
+      <div class="hero-title">
+        stay in<br><span class="strong">control</span>
+      </div>
+      <div class="hero-subtitle">Interrupts launch after sustained scrolling so your attention can reset before you lose track.</div>
+    </div>
+
+    <div class="main-toggle" id="mainToggle">
+      <div class="toggle-content">
+        <span class="toggle-label">Protection Mode</span>
+        <label class="toggle-switch">
+          <input type="checkbox" id="enableToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="sessionInterrupts">0</div>
+        <div class="stat-label">Today</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="totalInterrupts">0</div>
+        <div class="stat-label">All Time</div>
+      </div>
+    </div>
+
+    <div class="tier-display">
+      <div class="tier-label">Current Tier</div>
+      <div class="tier-name" id="currentTier">Wholesome</div>
+    </div>
+
+    <div class="action-buttons">
+      <button class="btn" id="optionsBtn">
+        <span>Settings</span>
+      </button>
+      <button class="btn" id="resetBtn">
+        <span>Reset</span>
+      </button>
+    </div>
+
+    <div class="footer">
+      <div class="footer-text">Focus preservation protocol</div>
     </div>
   </div>
-  
-  <div class="stats">
-    <h2>📊 Today's Stats</h2>
-    <div class="stat-row">
-      <span class="stat-label">Interrupts saved</span>
-      <span class="stat-value" id="sessionInterrupts">0</span>
-    </div>
-    <div class="stat-row">
-      <span class="stat-label">Total saved</span>
-      <span class="stat-value" id="totalInterrupts">0</span>
-    </div>
-    <div class="current-tier" id="currentTier">
-      Current tier: Wholesome ✨
-    </div>
-  </div>
-  
-  <div class="buttons">
-    <button id="resetBtn">Reset Stats</button>
-    <button id="optionsBtn">Settings</button>
-  </div>
-  
-  <div class="footer">
-    Keeping you weird since 2025
-  </div>
-  
+
   <script src="popup.js"></script>
 </body>
 </html>

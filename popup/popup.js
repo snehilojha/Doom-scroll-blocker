@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('enableToggle').addEventListener('change', handleToggle);
   document.getElementById('resetBtn').addEventListener('click', handleReset);
   document.getElementById('optionsBtn').addEventListener('click', openOptions);
+  
+  // Add click handler for main toggle card
+  document.getElementById('mainToggle').addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      const toggle = document.getElementById('enableToggle');
+      toggle.checked = !toggle.checked;
+      toggle.dispatchEvent(new Event('change'));
+    }
+  });
 });
 
 async function loadState() {
@@ -20,7 +29,11 @@ async function loadState() {
   
   // Update toggle
   const toggle = document.getElementById('enableToggle');
-  toggle.checked = state.enabled !== false; // Default to enabled
+  const enabled = state.enabled !== false; // Default to enabled
+  toggle.checked = enabled;
+  
+  // Update status indicator
+  updateStatusIndicator(enabled);
   
   // Update stats
   document.getElementById('sessionInterrupts').textContent = state.sessionInterrupts || 0;
@@ -29,17 +42,36 @@ async function loadState() {
   // Update current tier
   const tier = state.escalationLevel || 1;
   const tierNames = {
-    1: 'Wholesome ✨',
-    2: 'Weird 🌀',
-    3: 'WEIRD Weird 🎭',
-    4: 'Global Oddities 🌍'
+    1: 'Wholesome',
+    2: 'Weird',
+    3: 'WEIRD Weird',
+    4: 'Global Oddities'
   };
-  document.getElementById('currentTier').textContent = `Current tier: ${tierNames[tier]}`;
+  document.getElementById('currentTier').textContent = tierNames[tier];
+}
+
+function updateStatusIndicator(enabled) {
+  const indicator = document.getElementById('statusIndicator');
+  const statusText = document.getElementById('statusText');
+  const mainToggle = document.getElementById('mainToggle');
+  
+  if (enabled) {
+    indicator.classList.remove('inactive');
+    mainToggle.classList.remove('inactive');
+    statusText.textContent = 'ACTIVE';
+  } else {
+    indicator.classList.add('inactive');
+    mainToggle.classList.add('inactive');
+    statusText.textContent = 'INACTIVE';
+  }
 }
 
 async function handleToggle(event) {
   const enabled = event.target.checked;
   await chrome.storage.local.set({ enabled });
+  
+  // Update status indicator
+  updateStatusIndicator(enabled);
   
   console.log('Protection', enabled ? 'enabled' : 'disabled');
 }

@@ -67,7 +67,7 @@ function setupEventListeners() {
   
   // Keyword input
   document.getElementById('addKeywordBtn').addEventListener('click', addKeyword);
-  document.getElementById('keywordInput').addEventListener('keypress', (e) => {
+  document.getElementById('keywordInput').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       addKeyword();
     }
@@ -110,14 +110,14 @@ function renderKeywords() {
   const container = document.getElementById('keywordList');
   
   if (keywords.length === 0) {
-    container.innerHTML = '<p style="color: #9ca3af; font-size: 13px;">No keywords added yet</p>';
+    container.innerHTML = '<p class="empty-keywords">No keywords added yet</p>';
     return;
   }
   
   container.innerHTML = keywords.map(keyword => `
     <div class="keyword-tag">
       <span>${keyword}</span>
-      <span class="keyword-remove" onclick="removeKeywordFromUI('${keyword}')">×</span>
+      <span class="keyword-remove" onclick="removeKeywordFromUI('${keyword}')">X</span>
     </div>
   `).join('');
 }

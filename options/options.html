@@ -4,413 +4,621 @@
   <meta charset="UTF-8">
   <title>Doom Scroll Blocker - Settings</title>
   <style>
+    :root {
+      --bg-0: #020403;
+      --bg-1: #07110d;
+      --bg-2: #0a1912;
+      --panel: rgba(7, 16, 12, 0.86);
+      --panel-soft: rgba(10, 23, 16, 0.76);
+      --line: rgba(132, 170, 149, 0.28);
+      --line-strong: rgba(132, 228, 170, 0.46);
+      --text: #e7f2eb;
+      --muted: #9fb4a8;
+      --accent: #60ffa4;
+      --accent-deep: #24b46a;
+      --danger: #ff5f5f;
+    }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
-    
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes sweep {
+      0% {
+        transform: translateX(-140%);
+      }
+      100% {
+        transform: translateX(140%);
+      }
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       min-height: 100vh;
-      padding: 40px 20px;
+      font-family: "Space Grotesk", "Sora", "Manrope", "Segoe UI Variable Text", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(320px 320px at 86% 7%, rgba(66, 255, 144, 0.2), transparent 80%),
+        radial-gradient(300px 280px at 12% 95%, rgba(36, 180, 106, 0.2), transparent 80%),
+        linear-gradient(146deg, var(--bg-0), var(--bg-1), var(--bg-2));
+      padding: 42px 24px 56px;
+      overflow-x: hidden;
     }
-    
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        to right,
+        rgba(118, 160, 138, 0.03) 0 1px,
+        transparent 1px 5px
+      );
+      opacity: 0.6;
+    }
+
     .container {
-      max-width: 700px;
+      max-width: 1100px;
       margin: 0 auto;
-      background: white;
-      border-radius: 16px;
-      padding: 40px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
     }
-    
+
     .header {
-      text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 26px;
+      display: grid;
+      gap: 14px;
+      animation: fadeUp 360ms ease-out;
     }
-    
+
     .header h1 {
-      font-size: 32px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: clamp(40px, 8vw, 84px);
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.035em;
+      font-weight: 720;
+      max-width: 620px;
+    }
+
+    .header p {
+      max-width: 560px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .header-chip {
+      width: fit-content;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(8, 18, 13, 0.75);
+      color: #cde8d8;
+      padding: 8px 14px;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 650;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .section {
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(120deg, rgba(12, 29, 20, 0.68), rgba(6, 14, 10, 0.82)),
+        var(--panel);
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp 440ms ease-out backwards;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+
+    .section::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 54%;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(104, 255, 166, 0.75), transparent);
+      opacity: 0.7;
+    }
+
+    .section:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      box-shadow: 0 14px 28px rgba(2, 7, 4, 0.48);
+    }
+
+    .section:nth-child(1) { animation-delay: 0.05s; }
+    .section:nth-child(2) { animation-delay: 0.12s; }
+    .section:nth-child(3) { animation-delay: 0.2s; }
+    .section:nth-child(4) { animation-delay: 0.28s; }
+
+    .section-wide {
+      grid-column: 1 / -1;
+    }
+
+    .section-title {
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      font-weight: 680;
       margin-bottom: 8px;
     }
-    
-    .header p {
-      color: #666;
-      font-size: 14px;
-    }
-    
-    .section {
-      margin-bottom: 32px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .section:last-child {
-      border-bottom: none;
-      margin-bottom: 0;
-      padding-bottom: 0;
-    }
-    
-    .section-title {
-      font-size: 18px;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    
+
     .section-description {
       font-size: 14px;
-      color: #6b7280;
-      margin-bottom: 16px;
-      line-height: 1.6;
+      line-height: 1.55;
+      color: var(--muted);
+      margin-bottom: 18px;
+      max-width: 680px;
     }
-    
+
     .setting-row {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
-    
+
     .setting-label {
       display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: #374151;
-      margin-bottom: 8px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #bdd5c6;
+      margin-bottom: 10px;
+      font-weight: 650;
     }
-    
+
     input[type="range"] {
       width: 100%;
-      height: 6px;
-      background: #e5e7eb;
-      border-radius: 3px;
-      outline: none;
       -webkit-appearance: none;
+      appearance: none;
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(62, 157, 102, 0.38), rgba(19, 45, 32, 0.8));
+      border: 1px solid rgba(116, 162, 139, 0.35);
+      outline: none;
+      cursor: pointer;
     }
-    
+
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
       appearance: none;
-      width: 18px;
-      height: 18px;
-      background: #667eea;
-      cursor: pointer;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
+      border: 0;
+      background: linear-gradient(130deg, #9effcc, #3ed183);
+      box-shadow: 0 0 0 4px rgba(85, 255, 161, 0.2);
+      transition: transform 150ms ease;
     }
-    
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
     input[type="range"]::-moz-range-thumb {
-      width: 18px;
-      height: 18px;
-      background: #667eea;
-      cursor: pointer;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      border: none;
+      border: 0;
+      background: linear-gradient(130deg, #9effcc, #3ed183);
+      box-shadow: 0 0 0 4px rgba(85, 255, 161, 0.2);
+      transition: transform 150ms ease;
     }
-    
+
+    input[type="range"]::-moz-range-thumb:hover {
+      transform: scale(1.1);
+    }
+
     .range-value {
-      display: inline-block;
-      background: #f3f4f6;
-      padding: 4px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #667eea;
-      margin-top: 8px;
+      margin-top: 12px;
+      width: fit-content;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(117, 175, 146, 0.42);
+      background: rgba(11, 27, 19, 0.85);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ddfce9;
+      font-weight: 670;
     }
-    
+
     .toggle-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #f9fafb;
-      padding: 12px 16px;
-      border-radius: 8px;
+      gap: 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(121, 171, 145, 0.36);
+      background: rgba(7, 18, 13, 0.75);
+      padding: 16px;
+      transition: border-color 180ms ease, transform 180ms ease;
     }
-    
+
+    .toggle-container:hover {
+      border-color: rgba(139, 224, 176, 0.52);
+      transform: translateX(2px);
+    }
+
     .toggle-info {
       flex: 1;
     }
-    
+
     .toggle-title {
-      font-size: 14px;
-      font-weight: 500;
-      color: #1f2937;
+      font-size: 16px;
+      font-weight: 650;
       margin-bottom: 4px;
     }
-    
+
     .toggle-desc {
-      font-size: 12px;
-      color: #6b7280;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
     }
-    
+
     .toggle-switch {
       position: relative;
-      width: 50px;
-      height: 26px;
+      width: 58px;
+      height: 32px;
       flex-shrink: 0;
     }
-    
+
     .toggle-switch input {
       opacity: 0;
       width: 0;
       height: 0;
     }
-    
+
     .slider {
       position: absolute;
+      inset: 0;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #d1d5db;
-      transition: 0.3s;
-      border-radius: 26px;
+      border-radius: 99px;
+      border: 1px solid rgba(153, 190, 171, 0.4);
+      background: rgba(15, 29, 22, 0.9);
+      transition: 220ms ease;
     }
-    
+
     .slider:before {
-      position: absolute;
       content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: 0.3s;
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      left: 4px;
+      bottom: 4px;
       border-radius: 50%;
+      background: #f2fff7;
+      transition: 220ms ease;
     }
-    
+
     input:checked + .slider {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(120deg, rgba(101, 255, 169, 0.92), rgba(39, 195, 111, 0.92));
+      border-color: rgba(157, 250, 200, 0.72);
     }
-    
+
     input:checked + .slider:before {
-      transform: translateX(24px);
+      transform: translateX(26px);
+      background: #082114;
     }
-    
+
     .keyword-input {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 14px;
     }
-    
+
     input[type="text"] {
-      flex: 1;
-      padding: 10px 14px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(117, 171, 143, 0.4);
+      background: rgba(6, 14, 10, 0.84);
+      color: #effff5;
+      padding: 12px 14px;
       font-size: 14px;
       outline: none;
-      transition: border 0.2s;
+      transition: border-color 170ms ease, box-shadow 170ms ease;
     }
-    
+
+    input[type="text"]::placeholder {
+      color: #7f9687;
+    }
+
     input[type="text"]:focus {
-      border-color: #667eea;
+      border-color: rgba(127, 255, 181, 0.56);
+      box-shadow: 0 0 0 4px rgba(91, 255, 165, 0.14);
     }
-    
+
     .btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
+      position: relative;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s;
+      color: #0a1d12;
+      background: linear-gradient(120deg, #78ffb7, #39db87);
+      transition: transform 170ms ease, box-shadow 170ms ease, border-color 170ms ease, background 170ms ease, color 170ms ease;
+      overflow: hidden;
     }
-    
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+
+    .btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(80deg, transparent 20%, rgba(255, 255, 255, 0.55), transparent 80%);
+      transform: translateX(-130%);
+      pointer-events: none;
     }
-    
-    .btn-primary:hover {
+
+    .btn:hover::before {
+      animation: sweep 700ms ease;
+    }
+
+    .btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 12px 24px rgba(62, 216, 132, 0.26);
     }
-    
+
+    .btn span {
+      pointer-events: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #78ffb7, #39db87);
+      color: #091810;
+    }
+
     .btn-secondary {
-      background: #f3f4f6;
-      color: #374151;
+      background: rgba(8, 20, 14, 0.76);
+      color: #d6eadf;
+      border-color: rgba(120, 158, 138, 0.4);
+      box-shadow: none;
     }
-    
+
     .btn-secondary:hover {
-      background: #e5e7eb;
+      border-color: rgba(159, 212, 183, 0.64);
+      box-shadow: 0 12px 24px rgba(5, 13, 9, 0.44);
     }
-    
+
     .btn-danger {
-      background: #ef4444;
-      color: white;
+      background: linear-gradient(130deg, #ff7b7b, #f44949);
+      color: #210d0d;
     }
-    
+
     .btn-danger:hover {
-      background: #dc2626;
+      box-shadow: 0 12px 24px rgba(239, 73, 73, 0.28);
     }
-    
+
     .keyword-list {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 12px;
+      min-height: 26px;
     }
-    
+
     .keyword-tag {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: #f3f4f6;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #374151;
+      gap: 8px;
+      padding: 7px 10px 7px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(124, 180, 152, 0.5);
+      background: rgba(8, 20, 14, 0.85);
+      color: #d9efe3;
+      font-size: 12px;
+      font-weight: 620;
+      transition: transform 160ms ease, border-color 160ms ease;
     }
-    
+
+    .keyword-tag:hover {
+      transform: translateY(-1px);
+      border-color: rgba(153, 255, 201, 0.56);
+    }
+
     .keyword-remove {
-      cursor: pointer;
-      color: #ef4444;
-      font-weight: bold;
-      font-size: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(163, 220, 190, 0.4);
+      font-size: 11px;
       line-height: 1;
+      opacity: 0.85;
+      cursor: pointer;
+      transition: opacity 130ms ease, background 130ms ease;
     }
-    
+
     .keyword-remove:hover {
-      color: #dc2626;
+      opacity: 1;
+      background: rgba(103, 255, 170, 0.2);
     }
-    
+
+    .empty-keywords {
+      color: #7f9688;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .info-box {
+      margin-top: 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(107, 157, 131, 0.34);
+      background: rgba(7, 18, 13, 0.7);
+      padding: 11px 12px;
+    }
+
+    .info-box p {
+      color: #91a99c;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .danger-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
     .save-notice {
       position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #10b981;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      right: 22px;
+      bottom: 22px;
+      z-index: 10;
+      border-radius: 999px;
+      border: 1px solid rgba(137, 221, 175, 0.52);
+      background: rgba(9, 25, 17, 0.92);
+      color: #deffe9;
+      padding: 10px 14px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
       opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.3s;
+      transform: translateY(12px);
+      transition: opacity 240ms ease, transform 240ms ease;
       pointer-events: none;
     }
-    
+
     .save-notice.show {
       opacity: 1;
       transform: translateY(0);
     }
-    
-    .info-box {
-      background: #eff6ff;
-      border-left: 4px solid #3b82f6;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-top: 12px;
+
+    @media (max-width: 940px) {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section-wide {
+        grid-column: auto;
+      }
     }
-    
-    .info-box p {
-      font-size: 13px;
-      color: #1e40af;
-      line-height: 1.6;
+
+    @media (max-width: 560px) {
+      body {
+        padding: 24px 14px 42px;
+      }
+
+      .header h1 {
+        font-size: 42px;
+      }
+
+      .keyword-input {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>⚙️ Settings</h1>
-      <p>Customize your doom-scroll protection</p>
+      <div class="header-chip">doom-scroll blocker / control room</div>
+      <h1>settings that fight the feed</h1>
+      <p>Tune how fast interruptions trigger, how chaotic redirects feel, and which keywords break the loop early.</p>
     </div>
-    
-    <!-- Detection Settings -->
-    <div class="section">
-      <div class="section-title">🎯 Detection Settings</div>
-      <div class="section-description">
-        Control when and how the extension interrupts your scrolling
-      </div>
-      
-      <div class="setting-row">
-        <label class="setting-label">Trigger Threshold</label>
-        <input type="range" id="thresholdSlider" min="20" max="120" step="5" value="45">
-        <div class="range-value">
-          <span id="thresholdValue">45</span> seconds
+
+    <div class="settings-grid">
+      <div class="section">
+        <div class="section-title">Detection Settings</div>
+        <div class="section-description">Control when and how the extension interrupts your scrolling rhythm.</div>
+
+        <div class="setting-row">
+          <label class="setting-label">Trigger Threshold</label>
+          <input type="range" id="thresholdSlider" min="20" max="120" step="5" value="45">
+          <div class="range-value">
+            <span id="thresholdValue">45</span> seconds
+          </div>
+          <div class="info-box">
+            <p>Lower values trigger faster interruptions and enforce a stricter anti-doom-scroll cadence.</p>
+          </div>
         </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Chaos Mode</div>
+        <div class="section-description">Enable random tier jumps and unpredictable redirects.</div>
+
+        <div class="toggle-container">
+          <div class="toggle-info">
+            <div class="toggle-title">Enable Chaos Mode</div>
+            <div class="toggle-desc">Ignore normal escalation and inject random interruption behavior.</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="chaosModeToggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row" style="margin-top: 14px;">
+          <label class="setting-label">Chaos Intensity</label>
+          <input type="range" id="chaosIntensitySlider" min="0" max="100" step="10" value="50">
+          <div class="range-value">
+            <span id="chaosIntensityValue">50</span>%
+          </div>
+          <div class="info-box">
+            <p>Higher intensity increases how often chaos behavior overrides normal redirect flow.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section section-wide">
+        <div class="section-title">Keyword Triggers</div>
+        <div class="section-description">Instantly redirect when selected terms appear on page content.</div>
+
+        <div class="keyword-input">
+          <input type="text" id="keywordInput" placeholder="Add keyword trigger (example: breaking news)">
+          <button class="btn btn-primary" id="addKeywordBtn"><span>Add Keyword</span></button>
+        </div>
+
+        <div class="keyword-list" id="keywordList"></div>
+
         <div class="info-box">
-          <p>How long you can scroll before getting interrupted. Lower = more aggressive protection.</p>
+          <p>Keywords are matched case-insensitively. Content scanning runs every 3 seconds.</p>
         </div>
       </div>
-    </div>
-    
-    <!-- Chaos Mode -->
-    <div class="section">
-      <div class="section-title">🎲 Chaos Mode</div>
-      <div class="section-description">
-        Enable random interrupts and unpredictable tier selection
-      </div>
-      
-      <div class="toggle-container">
-        <div class="toggle-info">
-          <div class="toggle-title">Enable Chaos Mode</div>
-          <div class="toggle-desc">Randomly redirects you, ignoring normal escalation</div>
+
+      <div class="section section-wide">
+        <div class="section-title">Danger Zone</div>
+        <div class="section-description">Clear stats or wipe everything to restore defaults.</div>
+
+        <div class="danger-actions">
+          <button class="btn btn-secondary" id="resetStatsBtn"><span>Reset Statistics</span></button>
+          <button class="btn btn-danger" id="resetAllBtn"><span>Reset All Settings</span></button>
         </div>
-        <label class="toggle-switch">
-          <input type="checkbox" id="chaosModeToggle">
-          <span class="slider"></span>
-        </label>
-      </div>
-      
-      <div class="setting-row" style="margin-top: 16px;">
-        <label class="setting-label">Chaos Intensity</label>
-        <input type="range" id="chaosIntensitySlider" min="0" max="100" step="10" value="50">
-        <div class="range-value">
-          <span id="chaosIntensityValue">50</span>%
-        </div>
-        <div class="info-box">
-          <p>Higher intensity = more frequent random interrupts. Use with caution!</p>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Keyword Triggers -->
-    <div class="section">
-      <div class="section-title">🔑 Keyword Triggers</div>
-      <div class="section-description">
-        Auto-redirect when specific words appear on the page (e.g., "breaking news", "trump")
-      </div>
-      
-      <div class="keyword-input">
-        <input type="text" id="keywordInput" placeholder="Enter a keyword (e.g., 'elon')">
-        <button class="btn btn-primary" id="addKeywordBtn">Add</button>
-      </div>
-      
-      <div class="keyword-list" id="keywordList">
-        <!-- Keywords will be added here dynamically -->
-      </div>
-      
-      <div class="info-box">
-        <p>Keywords are case-insensitive. The page is scanned every 3 seconds.</p>
-      </div>
-    </div>
-    
-    <!-- Danger Zone -->
-    <div class="section">
-      <div class="section-title">⚠️ Danger Zone</div>
-      
-      <div style="display: flex; gap: 12px;">
-        <button class="btn btn-secondary" id="resetStatsBtn">Reset Statistics</button>
-        <button class="btn btn-danger" id="resetAllBtn">Reset All Settings</button>
       </div>
     </div>
   </div>
-  
-  <div class="save-notice" id="saveNotice">
-    ✓ Settings saved
-  </div>
-  
+
+  <div class="save-notice" id="saveNotice">Settings saved</div>
+
   <script src="options.js"></script>
 </body>
 </html>

@@ -26,6 +26,14 @@ At runtime, the extension combines:
 
 When thresholds are exceeded, the service worker selects a redirect target from the configured tier data files.
 
+## Installation (Developer Mode)
+
+1. Clone or download this repository.
+2. Open `chrome://extensions/` in Chrome.
+3. Enable Developer mode.
+4. Click **Load unpacked**.
+5. Select this project folder.
+
 ## Basic Usage
 
 1. Ensure the extension is enabled.
@@ -72,3 +80,6 @@ doom-scroll-blocker/
    `- icons/
 ```
 
+## License
+
+Add your preferred license before publishing.
