@@ -80,6 +80,3 @@ doom-scroll-blocker/
    `- icons/
 ```
 
-## License
-
-Add your preferred license before publishing.
