@@ -1,3 +1,7 @@
 ﻿# Local editor state
 .cursor/
 
+# Internal/private working docs
+BUILD_SUMMARY.md
+QUICKSTART.md
+TESTING.md
