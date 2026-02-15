@@ -1,9 +1,12 @@
 // Service Worker - handles redirect logic and tier escalation
 
 // Listen for messages from content script
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === 'DOOM_SCROLL_DETECTED') {
-    handleInterrupt(sender.tab.id, message);
+chrome.runtime.onMessage.addListener((message, sender) => {
+  if (message?.type === 'DOOM_SCROLL_DETECTED') {
+    const tabId = sender?.tab?.id;
+    if (typeof tabId === 'number') {
+      handleInterrupt(tabId, message);
+    }
   }
 });
 
@@ -11,6 +14,9 @@ async function handleInterrupt(tabId, data) {
   console.log('[Service Worker] Interrupt triggered:', data);
   
   try {
+    // Reset the daily session counter before reading state so increments are accurate.
+    await resetSessionCounterDaily();
+
     // Get user state
     const state = await chrome.storage.local.get([
       'enabled',
@@ -58,22 +64,23 @@ async function handleInterrupt(tabId, data) {
       escalationLevel: tier,
       history: [...(state.history || []), selected.url].slice(-50) // Keep last 50
     });
-    
-    // Reset session counter daily
-    resetSessionCounterDaily();
-    
-    // Show notification
+
+    // Show notification. Do not block redirect if notification assets fail.
     const tierMessage = getTierMessage(tier);
-    chrome.notifications.create({
-      type: 'basic',
-      iconUrl: '/assets/icons/icon128.png',
-      title: tierMessage,
-      message: selected.title || 'Taking you somewhere interesting...',
-      silent: false
-    });
+    try {
+      await chrome.notifications.create({
+        type: 'basic',
+        iconUrl: chrome.runtime.getURL('assets/icons/icon128.png'),
+        title: tierMessage,
+        message: selected.title || 'Taking you somewhere interesting...',
+        silent: false
+      });
+    } catch (notificationError) {
+      console.warn('[Service Worker] Notification failed, continuing redirect:', notificationError);
+    }
     
     // Redirect the tab
-    chrome.tabs.update(tabId, { url: selected.url });
+    await chrome.tabs.update(tabId, { url: selected.url });
     
   } catch (error) {
     console.error('[Service Worker] Error handling interrupt:', error);
@@ -126,12 +133,13 @@ function calculateTier(state) {
 function selectChaosTier(intensity) {
   // Higher intensity = more likely to hit higher tiers
   // Intensity range: 0.0 to 1.0
+  const clampedIntensity = Math.min(1, Math.max(0, Number(intensity) || 0));
   
   const weights = [
-    0.3 - (intensity * 0.2),  // Tier 1: 30% at low intensity, 10% at high
-    0.3,                       // Tier 2: constant 30%
-    0.2 + (intensity * 0.2),  // Tier 3: 20% at low, 40% at high
-    0.2 + (intensity * 0.3)   // Tier 4: 20% at low, 50% at high
+    0.3 - (clampedIntensity * 0.2), // Tier 1: 30% at low intensity, 10% at high
+    0.3 - (clampedIntensity * 0.1), // Tier 2: 30% at low, 20% at high
+    0.25 + (clampedIntensity * 0.1), // Tier 3: 25% at low, 35% at high
+    0.15 + (clampedIntensity * 0.2) // Tier 4: 15% at low, 35% at high
   ];
   
   const random = Math.random();
@@ -202,6 +210,9 @@ chrome.runtime.onInstalled.addListener(() => {
   console.log('[Service Worker] Extension installed/updated');
   resetSessionCounterDaily();
 });
+
+// Also normalize daily state on service-worker startup.
+resetSessionCounterDaily();
 
 // Check daily for session reset
 chrome.alarms.create('daily-reset', { periodInMinutes: 60 });

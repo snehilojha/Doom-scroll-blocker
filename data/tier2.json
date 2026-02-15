@@ -14,18 +14,28 @@
       "quality": 8
     },
     {
-      "url": "https://archive.org/web/",
-      "title": "Internet Archive - Wayback Machine",
+      "url": "https://pointerpointer.com/",
+      "title": "Pointer Pointer - The internet points back",
       "quality": 7
     },
     {
-      "url": "https://Neal.fun",
-      "title": "Neal.fun - Interactive internet toys",
+      "url": "https://littlealchemy2.com/",
+      "title": "Little Alchemy 2 - Weird combinational sandbox",
       "quality": 9
     },
     {
       "url": "https://randomstreetview.com/",
       "title": "Random Street View - Somewhere on Earth",
+      "quality": 8
+    },
+    {
+      "url": "https://www.window-swap.com/",
+      "title": "WindowSwap - Views from strangers' windows",
+      "quality": 8
+    },
+    {
+      "url": "https://www.mapcrunch.com/",
+      "title": "MapCrunch - Teleport to random street views",
       "quality": 8
     }
   ]

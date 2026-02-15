@@ -9,8 +9,8 @@
       "quality": 9
     },
     {
-      "url": "https://github.com/explore",
-      "title": "Explore GitHub - Random projects",
+      "url": "https://www.zooniverse.org/projects?status=live",
+      "title": "Zooniverse - Strange real citizen-science rabbit holes",
       "quality": 7
     },
     {
@@ -24,9 +24,19 @@
       "quality": 9
     },
     {
-      "url": "https://www.atlasobscura.com/random",
-      "title": "Atlas Obscura - Random wonder",
+      "url": "https://www.odditycentral.com/",
+      "title": "Oddity Central - Strange stories",
       "quality": 8
+    },
+    {
+      "url": "https://www.atoptics.co.uk/fz127.htm",
+      "title": "Atmospheric Optics - Rare sky phenomena archive",
+      "quality": 8
+    },
+    {
+      "url": "https://www.boredbutton.com/random",
+      "title": "Bored Button - One-click random internet oddities",
+      "quality": 9
     }
   ]
 }

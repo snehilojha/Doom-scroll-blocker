@@ -11,22 +11,52 @@
     {
       "url": "https://www.earthcam.com/",
       "title": "EarthCam - Live webcams worldwide",
-      "quality": 8
+      "quality": 9
     },
     {
-      "url": "https://www.airport-webcams.net/",
-      "title": "Airport Webcams - Watch planes land",
-      "quality": 7
+      "url": "https://www.windy.com/",
+      "title": "Windy - Real-time global weather map",
+      "quality": 8
     },
     {
       "url": "https://www.skylinewebcams.com/en.html",
       "title": "Skyline Webcams - Cities and landmarks",
-      "quality": 8
+      "quality": 9
     },
     {
       "url": "https://zoom.earth/",
       "title": "Zoom Earth - Real-time satellite view",
       "quality": 9
+    },
+    {
+      "url": "https://www.ventusky.com/",
+      "title": "Ventusky - Live weather and wind visualization",
+      "quality": 8
+    },
+    {
+      "url": "https://www.openculture.com/freeonlinecourses",
+      "title": "Open Culture - Deep random knowledge rabbit holes",
+      "quality": 8
+    },
+    {
+      "url": "https://www.flightradar24.com/",
+      "title": "Flightradar24 - Live aircraft tracker",
+      "quality": 9
+    },
+    {
+      "url": "https://www.lightningmaps.org/",
+      "title": "LightningMaps - Real-time lightning strikes",
+      "quality": 8
+    },
+    {
+      "url": "https://www.timeanddate.com/worldclock/",
+      "title": "World Clock - Cities live time snapshot",
+      "quality": 7
+    },
+    {
+      "url": "https://www.youtube.com/live",
+      "title": "YouTube Live - Global streams",
+      "quality": 7
     },
     {
       "url": "https://www.meteoblue.com/en/weather/webcams",

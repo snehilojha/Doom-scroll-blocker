@@ -4,29 +4,39 @@
   "description": "Calming, positive, uplifting content",
   "redirects": [
     {
-      "url": "https://www.boredpanda.com/cutest-puppy-dog-pictures/?utm_source=chatgpt.com/",
-      "title": "378 Of The Cutest Puppies Ever",
+      "url": "https://www.goodnewsnetwork.org/",
+      "title": "Good News Network - Positive world news",
       "quality": 9
     },
     {
-      "url": "https://www.thesprucepets.com/pictures-of-puppies-4176178?utm_source=chatgpt.com",
-      "title": "25 of the Cutest Puppies We’ve Ever Seen",
+      "url": "https://explore.org/livecams",
+      "title": "Explore.org - Relaxing live nature cams",
       "quality": 8
     },
     {
-      "url": "https://blog.prepscholar.com/cute-puppies-pictures-videos?utm_source=chatgpt.com",
-      "title": "The 72 Cutest Puppies to Brighten Your Day",
+      "url": "https://www.rainymood.com/",
+      "title": "Rainy Mood - Ambient rain sounds",
       "quality": 9
     },
     {
-      "url": "https://en.wikipedia.org/wiki/Shiba_Inu_Puppy_Cam?utm_source=chatgpt.com",
-      "title": "Shiba Inu Puppy Cam (Wikipedia)",
+      "url": "https://www.tree.fm/",
+      "title": "Tree.fm - Ambient forest soundscapes",
       "quality": 7
     },
     {
-      "url": "https://en.wikipedia.org/wiki/WeRateDogs?utm_source=chatgpt.com",
-      "title": "WeRateDogs (Dog Rating Account)",
+      "url": "https://www.thisiscolossal.com/",
+      "title": "Colossal - Beautiful art and visual stories",
       "quality": 8
+    },
+    {
+      "url": "https://www.boredpanda.com/cutest-puppy-dog-pictures/",
+      "title": "Bored Panda - Cutest puppy roundup",
+      "quality": 8
+    },
+    {
+      "url": "https://weirdorconfusing.com/",
+      "title": "Weird or Confusing - Light, silly positivity",
+      "quality": 7
     }
   ]
 }
