@@ -1,7 +1,7 @@
 {
   "tier": 4,
   "name": "Global Oddities",
-  "description": "Live streams and real-time feeds from around the world",
+  "description": "Live streams and real-time feeds from around the world and beyond",
   "redirects": [
     {
       "url": "https://www.nasa.gov/live",
@@ -9,38 +9,63 @@
       "quality": 10
     },
     {
-      "url": "https://www.earthcam.com/",
-      "title": "EarthCam - Live webcams worldwide",
+      "url": "https://spotthestation.nasa.gov/",
+      "title": "NASA Spot The Station - Live ISS tracking map",
       "quality": 9
     },
     {
-      "url": "https://www.windy.com/",
-      "title": "Windy - Real-time global weather map",
-      "quality": 8
+      "url": "https://www.heavens-above.com/",
+      "title": "Heavens-Above - Satellite and ISS live tracking",
+      "quality": 9
     },
     {
-      "url": "https://www.skylinewebcams.com/en.html",
-      "title": "Skyline Webcams - Cities and landmarks",
+      "url": "https://www.n2yo.com/",
+      "title": "N2YO - Real-time satellite orbit visualizer",
       "quality": 9
+    },
+    {
+      "url": "https://eyes.nasa.gov/apps/spacecraft/",
+      "title": "NASA Eyes - Live spacecraft and satellite tracker",
+      "quality": 10
+    },
+    {
+      "url": "https://nextspaceflight.com/launches/",
+      "title": "Next Spaceflight - Upcoming rocket launch tracker",
+      "quality": 9
+    },
+    {
+      "url": "https://www.spacex.com/launches/",
+      "title": "SpaceX Launches - Official rocket launch schedule",
+      "quality": 9
+    },
+    {
+      "url": "https://cneos.jpl.nasa.gov/ca/",
+      "title": "NASA CNEOS - Near-Earth asteroid close approach tracker",
+      "quality": 10
+    },
+    {
+      "url": "https://eyes.nasa.gov/apps/asteroids/",
+      "title": "NASA Eyes on Asteroids - Interactive asteroid tracker",
+      "quality": 9
+    },
+    {
+      "url": "https://worldview.earthdata.nasa.gov/",
+      "title": "NASA Worldview - Near real-time Earth satellite imagery",
+      "quality": 10
     },
     {
       "url": "https://zoom.earth/",
-      "title": "Zoom Earth - Real-time satellite view",
+      "title": "Zoom Earth - Real-time satellite weather view",
       "quality": 9
-    },
-    {
-      "url": "https://www.ventusky.com/",
-      "title": "Ventusky - Live weather and wind visualization",
-      "quality": 8
-    },
-    {
-      "url": "https://www.openculture.com/freeonlinecourses",
-      "title": "Open Culture - Deep random knowledge rabbit holes",
-      "quality": 8
     },
     {
       "url": "https://www.flightradar24.com/",
       "title": "Flightradar24 - Live aircraft tracker",
+      "quality": 9
+    },
+    {
+      "url": "https://www.marinetraffic.com/",
+      "title": "MarineTraffic - Live global ship tracking",
       "quality": 9
     },
     {
@@ -49,19 +74,9 @@
       "quality": 8
     },
     {
-      "url": "https://www.timeanddate.com/worldclock/",
-      "title": "World Clock - Cities live time snapshot",
-      "quality": 7
-    },
-    {
-      "url": "https://www.youtube.com/live",
-      "title": "YouTube Live - Global streams",
-      "quality": 7
-    },
-    {
-      "url": "https://www.meteoblue.com/en/weather/webcams",
-      "title": "MeteoBlue - Weather webcams worldwide",
-      "quality": 7
+      "url": "https://www.windy.com/",
+      "title": "Windy - Real-time global weather map",
+      "quality": 8
     }
   ]
 }

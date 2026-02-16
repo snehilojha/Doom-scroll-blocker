@@ -9,34 +9,104 @@
       "quality": 9
     },
     {
-      "url": "https://www.zooniverse.org/projects?status=live",
-      "title": "Zooniverse - Strange real citizen-science rabbit holes",
+      "url": "https://github.com/explore",
+      "title": "Explore GitHub – Random projects",
       "quality": 7
     },
     {
       "url": "https://www.marginalia.nu/",
-      "title": "Marginalia Search - Non-commercial web",
+      "title": "Marginalia Search – Non-commercial web discovery",
       "quality": 8
     },
     {
       "url": "https://wiby.me/surprise/",
-      "title": "Wiby - Search engine for old web",
+      "title": "Wiby Surprise – Random old web page",
       "quality": 9
     },
     {
       "url": "https://www.odditycentral.com/",
-      "title": "Oddity Central - Strange stories",
+      "title": "Oddity Central – Strange stories and odd news",
       "quality": 8
     },
     {
-      "url": "https://www.atoptics.co.uk/fz127.htm",
-      "title": "Atmospheric Optics - Rare sky phenomena archive",
+      "url": "https://www.howmanypeopleareinspacerightnow.com/",
+      "title": "How Many People Are In Space Right Now",
       "quality": 8
     },
     {
-      "url": "https://www.boredbutton.com/random",
-      "title": "Bored Button - One-click random internet oddities",
+      "url": "https://pointerpointer.com/",
+      "title": "Pointer Pointer – Finds a photo pointing at your cursor",
       "quality": 9
+    },
+    {
+      "url": "https://www.zoomquilt.org/",
+      "title": "Zoomquilt – Endless surreal zoomable artwork",
+      "quality": 9
+    },
+    {
+      "url": "http://www.staggeringbeauty.com/",
+      "title": "Staggering Beauty – Interactive weird animation",
+      "quality": 7
+    },
+    {
+      "url": "https://www.thispersondoesnotexist.com/",
+      "title": "This Person Does Not Exist – AI-generated faces",
+      "quality": 9
+    },
+    {
+      "url": "https://www.sanger.dk/",
+      "title": "Sanger.dk – Random interactive surprise content",
+      "quality": 8
+    },
+    {
+      "url": "https://www.theuselessweb.com/",
+      "title": "The Useless Web – Random pointless but fun websites",
+      "quality": 8
+    },
+    {
+      "url": "http://www.fallingfalling.com/",
+      "title": "Falling Falling – Endless falling colors",
+      "quality": 7
+    },
+    {
+      "url": "https://www.kleptography.com/",
+      "title": "Kleptography – Cryptography oddities and humor",
+      "quality": 7
+    },
+    {
+      "url": "https://cat-bounce.com/",
+      "title": "Cat Bounce – Bouncing cats interactive",
+      "quality": 7
+    },
+    {
+      "url": "https://www.omfgdogs.com/",
+      "title": "OMFG Dogs – Infinite meme dog animation",
+      "quality": 8
+    },
+    {
+      "url": "https://www.nesse.fr/",
+      "title": "Nesse – Generative visual experiments",
+      "quality": 7
+    },
+    {
+      "url": "http://corndog.io/",
+      "title": "CornDog.io – Unexpected interactive page",
+      "quality": 7
+    },
+    {
+      "url": "https://hackertyper.net/",
+      "title": "Hacker Typer – Fake hacker terminal simulator",
+      "quality": 8
+    },
+    {
+      "url": "https://r2.com/",
+      "title": "R2 – Endless weird link collection",
+      "quality": 8
+    },
+    {
+      "url": "https://www.papertoilet.com/",
+      "title": "Paper Toilet – Absurd interactive randomness",
+      "quality": 6
     }
   ]
 }

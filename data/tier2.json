@@ -10,17 +10,17 @@
     },
     {
       "url": "https://theuselessweb.com/",
-      "title": "The Useless Web - Random weird sites",
+      "title": "The Useless Web - Random weird websites",
       "quality": 8
     },
     {
-      "url": "https://pointerpointer.com/",
-      "title": "Pointer Pointer - The internet points back",
-      "quality": 7
+      "url": "https://archive.org/web/",
+      "title": "Internet Archive - Wayback Machine",
+      "quality": 8
     },
     {
-      "url": "https://littlealchemy2.com/",
-      "title": "Little Alchemy 2 - Weird combinational sandbox",
+      "url": "https://neal.fun/",
+      "title": "Neal.fun - Interactive internet experiments",
       "quality": 9
     },
     {
@@ -30,13 +30,103 @@
     },
     {
       "url": "https://www.window-swap.com/",
-      "title": "WindowSwap - Views from strangers' windows",
+      "title": "Window Swap - Random window views from around the world",
       "quality": 8
     },
     {
-      "url": "https://www.mapcrunch.com/",
-      "title": "MapCrunch - Teleport to random street views",
+      "url": "https://radio.garden/",
+      "title": "Radio Garden - Live radio stations worldwide",
+      "quality": 9
+    },
+    {
+      "url": "https://pointerpointer.com/",
+      "title": "Pointer Pointer - Photo pointing at your cursor",
       "quality": 8
+    },
+    {
+      "url": "https://zoomquilt.org/",
+      "title": "Zoomquilt - Endless surreal zoom artwork",
+      "quality": 9
+    },
+    {
+      "url": "https://www.thispersondoesnotexist.com/",
+      "title": "This Person Does Not Exist - AI generated faces",
+      "quality": 9
+    },
+    {
+      "url": "https://www.howmanypeopleareinspacerightnow.com/",
+      "title": "How Many People Are In Space Right Now",
+      "quality": 8
+    },
+    {
+      "url": "https://wiby.me/surprise/",
+      "title": "Wiby Surprise - Random old web page",
+      "quality": 9
+    },
+    {
+      "url": "https://www.marginalia.nu/",
+      "title": "Marginalia Search - Explore the non-commercial web",
+      "quality": 8
+    },
+    {
+      "url": "https://apod.nasa.gov/",
+      "title": "Astronomy Picture of the Day",
+      "quality": 8
+    },
+    {
+      "url": "https://www.omfgdogs.com/",
+      "title": "OMFG Dogs - Infinite meme animation",
+      "quality": 7
+    },
+    {
+      "url": "https://cat-bounce.com/",
+      "title": "Cat Bounce - Interactive bouncing cats",
+      "quality": 7
+    },
+    {
+      "url": "https://hackertyper.net/",
+      "title": "Hacker Typer - Fake hacker terminal",
+      "quality": 7
+    },
+    {
+      "url": "https://www.fallingfalling.com/",
+      "title": "Falling Falling - Endless falling visuals",
+      "quality": 7
+    },
+    {
+      "url": "https://www.worldometers.info/",
+      "title": "Worldometers - Real-time global statistics",
+      "quality": 9
+    },
+    {
+      "url": "https://www.gutenberg.org/",
+      "title": "Project Gutenberg - Free public domain books",
+      "quality": 9
+    },
+    {
+      "url": "https://openlibrary.org/",
+      "title": "Open Library - Browse millions of books",
+      "quality": 8
+    },
+    {
+      "url": "https://www.futureme.org/",
+      "title": "FutureMe - Send a letter to your future self",
+      "quality": 8
+    },
+    {
+      "url": "https://www.natureofcode.com/",
+      "title": "Nature of Code - Interactive creative coding concepts",
+      "quality": 8
+    },
+    {
+      "url": "https://everynoise.com/",
+      "title": "Every Noise at Once - Explore music genres visually",
+      "quality": 9
+    },
+    {
+      "url": "https://www.windowseat.io/",
+      "title": "WindowSeat - Explore scenic travel views",
+      "quality": 7
     }
   ]
 }

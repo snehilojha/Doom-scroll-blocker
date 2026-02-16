@@ -9,34 +9,124 @@
       "quality": 9
     },
     {
-      "url": "https://explore.org/livecams",
-      "title": "Explore.org - Relaxing live nature cams",
-      "quality": 8
-    },
-    {
-      "url": "https://www.rainymood.com/",
-      "title": "Rainy Mood - Ambient rain sounds",
+      "url": "https://www.ted.com/talks",
+      "title": "TED Talks - Inspiring ideas and stories",
       "quality": 9
     },
     {
-      "url": "https://www.tree.fm/",
-      "title": "Tree.fm - Ambient forest soundscapes",
-      "quality": 7
+      "url": "https://www.nationalgeographic.com/animals",
+      "title": "National Geographic Animals - Wildlife stories",
+      "quality": 9
     },
     {
-      "url": "https://www.thisiscolossal.com/",
-      "title": "Colossal - Beautiful art and visual stories",
+      "url": "https://www.bbc.com/future",
+      "title": "BBC Future - Science and uplifting discoveries",
       "quality": 8
     },
     {
-      "url": "https://www.boredpanda.com/cutest-puppy-dog-pictures/",
-      "title": "Bored Panda - Cutest puppy roundup",
+      "url": "https://apod.nasa.gov/",
+      "title": "Astronomy Picture of the Day - Daily cosmic beauty",
+      "quality": 9
+    },
+    {
+      "url": "https://neal.fun/deep-sea/",
+      "title": "Neal.fun - Deep Sea Interactive Exploration",
+      "quality": 8
+    },
+    {
+      "url": "https://www.window-swap.com/",
+      "title": "Window Swap - Peaceful window views worldwide",
+      "quality": 9
+    },
+    {
+      "url": "https://radio.garden/",
+      "title": "Radio Garden - Explore global radio calmly",
+      "quality": 9
+    },
+    {
+      "url": "https://www.patatap.com/",
+      "title": "Patatap - Relaxing visual music maker",
+      "quality": 8
+    },
+    {
+      "url": "https://asoftmurmur.com/",
+      "title": "A Soft Murmur - Custom ambient background sounds",
+      "quality": 10
+    },
+    {
+      "url": "https://earthcam.com/",
+      "title": "EarthCam - Peaceful live webcams",
+      "quality": 8
+    },
+    {
+      "url": "https://www.calm.com/blog",
+      "title": "Calm Blog - Mindfulness and relaxation articles",
+      "quality": 8
+    },
+    {
+      "url": "https://www.poetryfoundation.org/poems",
+      "title": "Poetry Foundation - Browse uplifting poetry",
+      "quality": 8
+    },
+    {
+      "url": "https://www.gutenberg.org/",
+      "title": "Project Gutenberg - Free classic literature",
+      "quality": 9
+    },
+    {
+      "url": "https://www.howmanypeopleareinspacerightnow.com/",
+      "title": "How Many People Are In Space Right Now",
+      "quality": 8
+    },
+    {
+      "url": "https://www.reddit.com/r/UpliftingNews/",
+      "title": "Reddit - Uplifting News",
+      "quality": 8
+    },
+    {
+      "url": "https://www.reddit.com/r/aww/",
+      "title": "Reddit - Aww (Cute Animals)",
       "quality": 8
     },
     {
       "url": "https://weirdorconfusing.com/",
-      "title": "Weird or Confusing - Light, silly positivity",
+      "title": "Weird or Confusing - Silly but harmless humor",
       "quality": 7
+    },
+    {
+      "url": "https://www.futureme.org/",
+      "title": "FutureMe - Write a letter to your future self",
+      "quality": 8
+    },
+    {
+      "url": "https://www.nature.org/en-us/",
+      "title": "The Nature Conservancy - Environmental positivity",
+      "quality": 8
+    },
+    {
+      "url": "https://www.worldwildlife.org/",
+      "title": "World Wildlife Fund - Conservation stories",
+      "quality": 8
+    },
+    {
+      "url": "https://www.boredpanda.com/cute/",
+      "title": "Bored Panda - Cute and wholesome stories",
+      "quality": 8
+    },
+    {
+      "url": "https://www.moma.org/calendar/exhibitions",
+      "title": "MoMA - Explore art exhibitions",
+      "quality": 7
+    },
+    {
+      "url": "https://www.storyberries.com/",
+      "title": "Storyberries - Free children's stories",
+      "quality": 8
+    },
+    {
+      "url": "https://www.earth.fm/",
+      "title": "Earth.fm - Natural ambient soundscapes",
+      "quality": 9
     }
   ]
 }
