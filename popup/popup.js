@@ -1,6 +1,10 @@
 // Popup script - handles UI interactions
 
 let keywords = [];
+const SETTINGS_REVEAL_MS = 280;
+let settingsPanelCloseHandler = null;
+let settingsPanelCleanupTimer = null;
+let settingsPanelOpenRaf = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Load current state
@@ -222,11 +226,88 @@ async function handleReset() {
 }
 
 function openSettings() {
-  document.getElementById('settingsPanel').classList.add('active');
+  const panel = document.getElementById('settingsPanel');
+  const button = document.getElementById('optionsBtn');
+  if (!panel || !button) {
+    return;
+  }
+
+  clearSettingsPanelAnimationState(panel);
+  setSettingsRevealOrigin(panel, button);
+  panel.classList.remove('closing');
+
+  if (panel.classList.contains('active')) {
+    return;
+  }
+
+  // Stage class toggle on the next frame so the browser can interpolate clip-path cleanly.
+  settingsPanelOpenRaf = requestAnimationFrame(() => {
+    settingsPanelOpenRaf = null;
+    panel.classList.add('active');
+  });
 }
 
 function closeSettings() {
-  document.getElementById('settingsPanel').classList.remove('active');
+  const panel = document.getElementById('settingsPanel');
+  const button = document.getElementById('optionsBtn');
+  if (!panel || !button) {
+    return;
+  }
+
+  clearSettingsPanelAnimationState(panel);
+  setSettingsRevealOrigin(panel, button);
+  panel.classList.remove('active');
+  panel.classList.add('closing');
+
+  const finalizeClose = () => {
+    if (!panel.classList.contains('closing')) {
+      return;
+    }
+    panel.classList.remove('closing');
+    clearSettingsPanelAnimationState(panel);
+  };
+
+  settingsPanelCloseHandler = (event) => {
+    if (event.target !== panel || event.propertyName !== 'clip-path') {
+      return;
+    }
+    finalizeClose();
+  };
+  panel.addEventListener('transitionend', settingsPanelCloseHandler);
+
+  // Fallback in case transitionend is skipped.
+  settingsPanelCleanupTimer = setTimeout(finalizeClose, SETTINGS_REVEAL_MS + 40);
+}
+
+function setSettingsRevealOrigin(panel, button) {
+  const panelRect = panel.getBoundingClientRect();
+  const buttonRect = button.getBoundingClientRect();
+  const x = (buttonRect.left + (buttonRect.width / 2)) - panelRect.left;
+  const y = (buttonRect.top + (buttonRect.height / 2)) - panelRect.top;
+  const r1 = Math.hypot(x, y);
+  const r2 = Math.hypot(panelRect.width - x, y);
+  const r3 = Math.hypot(x, panelRect.height - y);
+  const r4 = Math.hypot(panelRect.width - x, panelRect.height - y);
+  const revealRadius = Math.ceil(Math.max(r1, r2, r3, r4)) + 24;
+
+  panel.style.setProperty('--reveal-x', `${x}px`);
+  panel.style.setProperty('--reveal-y', `${y}px`);
+  panel.style.setProperty('--reveal-r', `${revealRadius}px`);
+}
+
+function clearSettingsPanelAnimationState(panel) {
+  if (settingsPanelOpenRaf) {
+    cancelAnimationFrame(settingsPanelOpenRaf);
+    settingsPanelOpenRaf = null;
+  }
+  if (settingsPanelCleanupTimer) {
+    clearTimeout(settingsPanelCleanupTimer);
+    settingsPanelCleanupTimer = null;
+  }
+  if (settingsPanelCloseHandler) {
+    panel.removeEventListener('transitionend', settingsPanelCloseHandler);
+    settingsPanelCloseHandler = null;
+  }
 }
 
 async function loadSettings() {
