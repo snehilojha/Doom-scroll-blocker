@@ -25,9 +25,121 @@ document.addEventListener('DOMContentLoaded', async () => {
     toggle.checked = !toggle.checked;
     toggle.dispatchEvent(new Event('change'));
   });
+
+  setupHeroHoverAnimation();
   
   setupSettingsListeners();
 });
+
+function setupHeroHoverAnimation() {
+  const heroCard = document.getElementById('heroCard');
+  const heroDefault = document.querySelector('.hero-default');
+  if (!heroCard || !heroDefault) {
+    return;
+  }
+
+  const HOVER_DELAY_MS = 1000;
+  const MESSAGE_FADE_MS = 320;
+  const MESSAGE_SHOW_DELAY_MS = 220;
+
+  let hoverTimeout = null;
+  let collapseTimeout = null;
+  let messageShowTimeout = null;
+  let animationFrame = null;
+  let isAnimating = false;
+
+  function stopHorizontalAnimation() {
+    if (animationFrame) {
+      cancelAnimationFrame(animationFrame);
+      animationFrame = null;
+    }
+    heroDefault.style.willChange = '';
+    isAnimating = false;
+  }
+
+  function clearPendingTimers() {
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+    if (collapseTimeout) {
+      clearTimeout(collapseTimeout);
+      collapseTimeout = null;
+    }
+    if (messageShowTimeout) {
+      clearTimeout(messageShowTimeout);
+      messageShowTimeout = null;
+    }
+  }
+
+  function fullyResetHero() {
+    clearPendingTimers();
+    stopHorizontalAnimation();
+    heroCard.classList.remove('is-message-visible');
+    heroCard.classList.remove('is-hovered');
+    heroDefault.style.transform = 'translate3d(0, 0, 0)';
+  }
+
+  heroCard.addEventListener('mouseenter', () => {
+    clearPendingTimers();
+    hoverTimeout = setTimeout(() => {
+      startHorizontalAnimation();
+    }, HOVER_DELAY_MS);
+  });
+
+  heroCard.addEventListener('mouseleave', () => {
+    clearPendingTimers();
+    heroCard.classList.remove('is-message-visible');
+    stopHorizontalAnimation();
+    collapseTimeout = setTimeout(() => {
+      heroCard.classList.remove('is-hovered');
+      heroDefault.style.transform = 'translate3d(0, 0, 0)';
+    }, MESSAGE_FADE_MS);
+  });
+
+  function startHorizontalAnimation() {
+    if (isAnimating) {
+      return;
+    }
+
+    heroCard.classList.add('is-hovered');
+    messageShowTimeout = setTimeout(() => {
+      heroCard.classList.add('is-message-visible');
+      messageShowTimeout = null;
+    }, MESSAGE_SHOW_DELAY_MS);
+    isAnimating = true;
+    heroDefault.style.willChange = 'transform';
+
+    const startTime = performance.now();
+    const duration = 2000;
+    const targetY = 0;
+
+    const cardWidth = heroCard.getBoundingClientRect().width;
+    const textWidth = heroDefault.getBoundingClientRect().width;
+    const centerOffset = (cardWidth - textWidth) / .5;
+
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const currentX = (centerOffset * easeProgress);
+      const currentY = targetY * progress;
+
+      heroDefault.style.transform = `translate3d(${Math.round(currentX)}px, ${Math.round(currentY)}px, 0)`;
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        stopHorizontalAnimation();
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate);
+  }
+
+  // Safety reset for fast popup close / blur edge cases
+  window.addEventListener('blur', fullyResetHero);
+}
 
 async function loadState() {
   const state = await chrome.storage.local.get([
