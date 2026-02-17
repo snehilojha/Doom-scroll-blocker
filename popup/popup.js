@@ -39,14 +39,12 @@ function setupHeroHoverAnimation() {
   }
 
   const HOVER_DELAY_MS = 1000;
-  const MESSAGE_FADE_MS = 320;
   const MESSAGE_SHOW_DELAY_MS = 220;
+  const HERO_SHIFT_MS = 2000;
 
   let hoverTimeout = null;
-  let collapseTimeout = null;
   let messageShowTimeout = null;
   let animationFrame = null;
-  let isAnimating = false;
 
   function stopHorizontalAnimation() {
     if (animationFrame) {
@@ -54,17 +52,60 @@ function setupHeroHoverAnimation() {
       animationFrame = null;
     }
     heroDefault.style.willChange = '';
-    isAnimating = false;
+  }
+
+  function getCurrentTranslateX() {
+    const transform = window.getComputedStyle(heroDefault).transform;
+    if (!transform || transform === 'none') {
+      return 0;
+    }
+    try {
+      return new DOMMatrixReadOnly(transform).m41;
+    } catch (_error) {
+      return 0;
+    }
+  }
+
+  function getCenterOffset() {
+    const cardWidth = heroCard.getBoundingClientRect().width;
+    const textWidth = heroDefault.getBoundingClientRect().width;
+    return (cardWidth - textWidth) / .5;
+  }
+
+  function animateHorizontalTo(targetX, duration) {
+    const startX = getCurrentTranslateX();
+    if (Math.abs(targetX - startX) < 0.5) {
+      heroDefault.style.transform = `translate3d(${Math.round(targetX)}px, 0, 0)`;
+      return;
+    }
+
+    stopHorizontalAnimation();
+    heroDefault.style.willChange = 'transform';
+
+    const startTime = performance.now();
+
+    function animate(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const currentX = startX + ((targetX - startX) * easeProgress);
+
+      heroDefault.style.transform = `translate3d(${Math.round(currentX)}px, 0, 0)`;
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      } else {
+        stopHorizontalAnimation();
+      }
+    }
+
+    animationFrame = requestAnimationFrame(animate);
   }
 
   function clearPendingTimers() {
     if (hoverTimeout) {
       clearTimeout(hoverTimeout);
       hoverTimeout = null;
-    }
-    if (collapseTimeout) {
-      clearTimeout(collapseTimeout);
-      collapseTimeout = null;
     }
     if (messageShowTimeout) {
       clearTimeout(messageShowTimeout);
@@ -90,51 +131,17 @@ function setupHeroHoverAnimation() {
   heroCard.addEventListener('mouseleave', () => {
     clearPendingTimers();
     heroCard.classList.remove('is-message-visible');
-    stopHorizontalAnimation();
-    collapseTimeout = setTimeout(() => {
-      heroCard.classList.remove('is-hovered');
-      heroDefault.style.transform = 'translate3d(0, 0, 0)';
-    }, MESSAGE_FADE_MS);
+    heroCard.classList.remove('is-hovered');
+    animateHorizontalTo(0, HERO_SHIFT_MS);
   });
 
   function startHorizontalAnimation() {
-    if (isAnimating) {
-      return;
-    }
-
     heroCard.classList.add('is-hovered');
     messageShowTimeout = setTimeout(() => {
       heroCard.classList.add('is-message-visible');
       messageShowTimeout = null;
     }, MESSAGE_SHOW_DELAY_MS);
-    isAnimating = true;
-    heroDefault.style.willChange = 'transform';
-
-    const startTime = performance.now();
-    const duration = 2000;
-    const targetY = 0;
-
-    const cardWidth = heroCard.getBoundingClientRect().width;
-    const textWidth = heroDefault.getBoundingClientRect().width;
-    const centerOffset = (cardWidth - textWidth) / .5;
-
-    function animate(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
-      const currentX = (centerOffset * easeProgress);
-      const currentY = targetY * progress;
-
-      heroDefault.style.transform = `translate3d(${Math.round(currentX)}px, ${Math.round(currentY)}px, 0)`;
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      } else {
-        stopHorizontalAnimation();
-      }
-    }
-
-    animationFrame = requestAnimationFrame(animate);
+    animateHorizontalTo(getCenterOffset(), HERO_SHIFT_MS);
   }
 
   // Safety reset for fast popup close / blur edge cases
