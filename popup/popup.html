@@ -103,6 +103,7 @@
       z-index: 1;
       padding: 20px;
       animation: fadeUp 320ms ease-out;
+      min-height: 540px;
     }
 
     .container::after {
@@ -298,7 +299,7 @@
       border-radius: 99px;
       border: 1px solid rgba(167, 203, 181, 0.36);
       background: rgba(14, 24, 18, 0.92);
-      transition: 220ms ease;
+      transition: 500ms ease;
     }
 
     .slider:before {
@@ -310,7 +311,7 @@
       bottom: 4px;
       border-radius: 50%;
       background: #f0faf3;
-      transition: 220ms ease;
+      transition: 500ms ease;
     }
 
     input:checked + .slider {
@@ -440,12 +441,404 @@
       animation: fadeUp 860ms ease-out;
     }
 
+    .save-notice {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      border-radius: 999px;
+      border: 1px solid rgba(137, 221, 175, 0.52);
+      background: rgba(9, 25, 17, 0.92);
+      color: #deffe9;
+      padding: 8px 12px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      opacity: 0;
+      transform: translateY(-12px);
+      transition: opacity 240ms ease, transform 240ms ease;
+      pointer-events: none;
+    }
+
+    .save-notice.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .settings-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(3, 8, 6, 0.98);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 20px;
+      overflow-y: auto;
+      z-index: 100;
+      display: none;
+      animation: fadeIn 300ms ease;
+    }
+
+    .settings-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .settings-title {
+      font-size: 18px;
+      font-weight: 680;
+      letter-spacing: -0.02em;
+      color: #e9ffe9;
+    }
+
+    .close-settings {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 8px;
+      transition: color 180ms ease, background 180ms ease;
+    }
+
+    .close-settings:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-section {
+      margin-bottom: 20px;
+    }
+
+    .settings-section-title {
+      font-size: 14px;
+      font-weight: 660;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #bdd5c6;
+      margin-bottom: 12px;
+    }
+
+    .settings-row {
+      margin-bottom: 16px;
+    }
+
+    .settings-label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #9eb8a8;
+      margin-bottom: 8px;
+      font-weight: 650;
+    }
+
+    .settings-range {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(62, 157, 102, 0.38), rgba(19, 45, 32, 0.8));
+      border: 1px solid rgba(116, 162, 139, 0.35);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .settings-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 0;
+      background: linear-gradient(130deg, #9effcc, #3ed183);
+      box-shadow: 0 0 0 3px rgba(85, 255, 161, 0.2);
+      transition: transform 150ms ease;
+    }
+
+    .settings-range::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .settings-range-value {
+      margin-top: 8px;
+      width: fit-content;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(117, 175, 146, 0.42);
+      background: rgba(11, 27, 19, 0.85);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #ddfce9;
+      font-weight: 670;
+    }
+
+    .settings-toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(121, 171, 145, 0.36);
+      background: rgba(7, 18, 13, 0.75);
+      padding: 12px;
+      transition: border-color 180ms ease;
+    }
+
+    .settings-toggle-container:hover {
+      border-color: rgba(139, 224, 176, 0.52);
+    }
+
+    .settings-toggle-info {
+      flex: 1;
+    }
+
+    .settings-toggle-title {
+      font-size: 13px;
+      font-weight: 650;
+      margin-bottom: 2px;
+      color: #e9ffe9;
+    }
+
+    .settings-toggle-desc {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .settings-toggle-switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+
+    .settings-toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .settings-slider {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 99px;
+      border: 1px solid rgba(153, 190, 171, 0.4);
+      background: rgba(15, 29, 22, 0.9);
+      transition: 220ms ease;
+    }
+
+    .settings-slider:before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      bottom: 3px;
+      border-radius: 50%;
+      background: #f2fff7;
+      transition: 220ms ease;
+    }
+
+    input:checked + .settings-slider {
+      background: linear-gradient(120deg, rgba(101, 255, 169, 0.92), rgba(39, 195, 111, 0.92));
+      border-color: rgba(157, 250, 200, 0.72);
+    }
+
+    input:checked + .settings-slider:before {
+      transform: translateX(20px);
+      background: #082114;
+    }
+
+    .keyword-input {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .keyword-input input {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid rgba(117, 171, 143, 0.4);
+      background: rgba(6, 14, 10, 0.84);
+      color: #effff5;
+      padding: 8px 10px;
+      font-size: 12px;
+      outline: none;
+      transition: border-color 170ms ease;
+    }
+
+    .keyword-input input::placeholder {
+      color: #7f9687;
+    }
+
+    .keyword-input input:focus {
+      border-color: rgba(127, 255, 181, 0.56);
+    }
+
+    .keyword-btn {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      color: #0a1d12;
+      background: linear-gradient(120deg, #78ffb7, #39db87);
+      transition: transform 170ms ease, box-shadow 170ms ease;
+    }
+
+    .keyword-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(62, 216, 132, 0.26);
+    }
+
+    .keyword-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      min-height: 20px;
+    }
+
+    .keyword-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(124, 180, 152, 0.5);
+      background: rgba(8, 20, 14, 0.85);
+      color: #d9efe3;
+      font-size: 10px;
+      font-weight: 620;
+      transition: transform 160ms ease, border-color 160ms ease;
+    }
+
+    .keyword-tag:hover {
+      transform: translateY(-1px);
+      border-color: rgba(153, 255, 201, 0.56);
+    }
+
+    .keyword-remove {
+      appearance: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(163, 220, 190, 0.4);
+      font-size: 9px;
+      line-height: 1;
+      opacity: 0.85;
+      cursor: pointer;
+      transition: opacity 130ms ease, background 130ms ease;
+    }
+
+    .keyword-remove:hover {
+      opacity: 1;
+      background: rgba(103, 255, 170, 0.2);
+    }
+
+    .empty-keywords {
+      color: #7f9688;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .danger-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .danger-btn {
+      border: 1px solid transparent;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 170ms ease, box-shadow 170ms ease;
+    }
+
+    .danger-btn-secondary {
+      background: rgba(8, 20, 14, 0.76);
+      color: #d6eadf;
+      border-color: rgba(120, 158, 138, 0.4);
+    }
+
+    .danger-btn-secondary:hover {
+      border-color: rgba(159, 212, 183, 0.64);
+      transform: translateY(-1px);
+    }
+
+    .danger-btn-danger {
+      background: linear-gradient(130deg, #ff7b7b, #f44949);
+      color: #210d0d;
+    }
+
+    .danger-btn-danger:hover {
+      box-shadow: 0 8px 16px rgba(239, 73, 73, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .settings-info {
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(107, 157, 131, 0.34);
+      background: rgba(7, 18, 13, 0.7);
+      padding: 8px 10px;
+    }
+
+    .settings-info p {
+      color: #91a99c;
+      font-size: 10px;
+      line-height: 1.55;
+    }
+
     .footer-text {
-      color: #79907f;
+      color: var(--muted);
       font-size: 10px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       font-weight: 620;
+      text-shadow: 0 0 8px rgba(76, 255, 143, 0.3);
     }
   </style>
 </head>
@@ -507,6 +900,82 @@
     <div class="footer">
       <div class="footer-text">Attention is Finite</div>
     </div>
+
+    <!-- Settings Panel -->
+    <div class="settings-panel" id="settingsPanel">
+      <div class="settings-header">
+        <div class="settings-title">Settings</div>
+        <button class="close-settings" id="closeSettings">×</button>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Detection Settings</div>
+        
+        <div class="settings-row">
+          <label class="settings-label">Trigger Threshold</label>
+          <input type="range" class="settings-range" id="thresholdSlider" min="20" max="120" step="5" value="45">
+          <div class="settings-range-value">
+            <span id="thresholdValue">45</span> seconds
+          </div>
+          <div class="settings-info">
+            <p>Lower values trigger faster interruptions and enforce a stricter anti-doom-scroll cadence.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Chaos Mode</div>
+        
+        <div class="settings-toggle-container">
+          <div class="settings-toggle-info">
+            <div class="settings-toggle-title">Enable Chaos Mode</div>
+            <div class="settings-toggle-desc">Ignore normal escalation and inject random interruption behavior.</div>
+          </div>
+          <label class="settings-toggle-switch">
+            <input type="checkbox" id="chaosModeToggle">
+            <span class="settings-slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row" style="margin-top: 14px;">
+          <label class="settings-label">Chaos Intensity</label>
+          <input type="range" class="settings-range" id="chaosIntensitySlider" min="0" max="100" step="10" value="50">
+          <div class="settings-range-value">
+            <span id="chaosIntensityValue">50</span>%
+          </div>
+          <div class="settings-info">
+            <p>Higher intensity increases how often chaos behavior overrides normal redirect flow.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Keyword Triggers</div>
+        
+        <div class="keyword-input">
+          <input type="text" id="keywordInput" placeholder="Add keyword trigger (example: breaking news)">
+          <button class="keyword-btn" id="addKeywordBtn">Add Keyword</button>
+        </div>
+
+        <div class="keyword-list" id="keywordList"></div>
+
+        <div class="settings-info">
+          <p>Keywords are matched case-insensitively. Content scanning runs every 3 seconds.</p>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-section-title">Danger Zone</div>
+        
+        <div class="danger-actions">
+          <button class="danger-btn danger-btn-secondary" id="resetStatsBtn">Reset Statistics</button>
+          <button class="danger-btn danger-btn-danger" id="resetAllBtn">Reset All Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Notice -->
+    <div class="save-notice" id="saveNotice">Settings saved</div>
   </div>
 
   <script src="popup.js"></script>
